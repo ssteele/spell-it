@@ -1,22 +1,44 @@
-const { useState } = React;
+const { useEffect, useState } = React;
 
 function SpellItApp() {
-  const [word, setWord] = useState('foobar');
-  const [targetIndex, setTargetIndex] = useState(0);
+  const [input, setInput] = useState('');
+  const [hints, setHints] = useState([]);
 
+  const hintCount = 4;
   const target = 'sun';
 
   const alphabetLetters = [...'abcdefghijklmnopqrstuvwxyz'];
   const targetLetters = [...target];
-  const targetLetter = targetLetters[targetIndex];
 
-  const hintCount = 4;
-  const hintLetters = [...alphabetLetters]
-    .sort(() => Math.random() - 0.5)
-    .slice(0, hintCount - 1)
-    .concat(targetLetter)
-    .sort(() => Math.random() - 0.5);
+  const updateHintLetters = (input) => {
+    if (input !== target.slice(0, input.length)) {
+      setHints(['_blank']);
+      return;
+    }
 
+    if (input === target) {
+      setHints(['_check']);
+      return;
+    }
+
+    const targetIndex = input.length;
+    const targetLetter = targetLetters[targetIndex];
+    const hintLetters = [...alphabetLetters]
+      .filter((letter) => letter !== targetLetter)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, hintCount - 1)
+      .concat(targetLetter)
+      .sort(() => Math.random() - 0.5);
+    setHints(hintLetters);
+  };
+
+  const updateInput = (text) => {
+    setInput(text);
+  };
+
+  useEffect(() => {
+    updateHintLetters(input);
+  }, [input]);
 
   return (
     <>
@@ -25,19 +47,21 @@ function SpellItApp() {
         id="input"
         placeholder="Spell it"
         type="text"
-        value={word}
+        value={input}
         onChange={(e) => {
           const text = e?.target?.value;
-          setWord(text);
+          updateInput(text);
         }}
       />
       
       <section className="body flex h-screen mx-12">
         {hintCount > 0 && (
           <section className="grid grid-cols-1 gap-y-20 content-center">
-            {hintLetters.map((letter, idx) => (
+            {hints.map((letter, idx) => (
               <section className="abc" key={idx}>
-                <span className="text-2xl font-bold">{letter}</span>
+                {1 === letter.length && (
+                  <span className="text-2xl font-bold">{letter}</span>
+                )}
                 <img
                   className="max-h-24 max-w-24"
                   src={`img/abcs/${letter}.svg`}
@@ -55,7 +79,7 @@ function SpellItApp() {
             />
           </section>
 
-          <section className="word h-32 text-9xl">{word}</section>
+          <section className="word h-32 text-9xl">{input}</section>
         </section>
       </section>
     </>
