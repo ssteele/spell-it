@@ -2,8 +2,21 @@ const { useState } = React;
 
 function SpellItApp() {
   const [word, setWord] = useState('foobar');
+  const [targetIndex, setTargetIndex] = useState(0);
+
   const target = 'sun';
-  const hintLetters = ['s', 'w', 'y', 'z'];
+
+  const alphabetLetters = [...'abcdefghijklmnopqrstuvwxyz'];
+  const targetLetters = [...target];
+  const targetLetter = targetLetters[targetIndex];
+
+  const hintCount = 4;
+  const hintLetters = [...alphabetLetters]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, hintCount - 1)
+    .concat(targetLetter)
+    .sort(() => Math.random() - 0.5);
+
 
   return (
     <>
@@ -20,17 +33,19 @@ function SpellItApp() {
       />
       
       <section className="body flex h-screen mx-12">
-        <section className="grid grid-cols-1 gap-y-20 content-center">
-          {hintLetters.map((letter, idx) => (
-            <section className="abc" key={idx}>
-              <span className="text-2xl font-bold">{letter}</span>
-              <img
-                className="max-h-24 max-w-24"
-                src={`img/abcs/${letter}.svg`}
-              />
-            </section>
-          ))} 
-        </section>
+        {hintCount > 0 && (
+          <section className="grid grid-cols-1 gap-y-20 content-center">
+            {hintLetters.map((letter, idx) => (
+              <section className="abc" key={idx}>
+                <span className="text-2xl font-bold">{letter}</span>
+                <img
+                  className="max-h-24 max-w-24"
+                  src={`img/abcs/${letter}.svg`}
+                />
+              </section>
+            ))} 
+          </section>
+        )}
 
         <section className="main grid grid-cols-1 gap-y-8 w-full items-center justify-items-center">
           <section className="target">
