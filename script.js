@@ -54,9 +54,9 @@ function SpellItApp() {
         onChange={(e) => setInput(e?.target?.value)}
       />
       
-      <section className="flex h-screen mx-12">
+      <section className="flex h-screen">
         {hintCount > 0 && (
-          <section className="grid grid-cols-1 gap-y-20 content-center">
+          <section className="grid grid-cols-1 gap-y-20 content-center bg-gray-200 px-12">
             {hints.map((letter, idx) => (
               <section key={idx}>
                 {1 === letter.length && (
