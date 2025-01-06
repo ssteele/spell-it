@@ -35,6 +35,11 @@ function SpellItApp() {
   };
 
   useEffect(() => {
+    const inputEl = document.getElementById('input'); 
+    inputEl.focus(); 
+  }, []);
+
+  useEffect(() => {
     updateHintLetters(input);
   }, [input]);
 
