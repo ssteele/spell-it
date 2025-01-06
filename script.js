@@ -12,9 +12,18 @@ function SpellItApp() {
   const alphabetLetters = [...'abcdefghijklmnopqrstuvwxyz'];
   const targetLetters = [...target];
 
+  useEffect(() => {
+    const inputEl = document.getElementById('input'); 
+    inputEl.focus(); 
+  }, []);
+
+  useEffect(() => {
+    updateHintLetters(input);
+  }, [input]);
+
   const updateHintLetters = (input) => {
     if (input !== target.slice(0, input.length)) {
-      setHints(['_blank']);
+      setHints(['_back']);
       return;
     }
 
@@ -34,14 +43,19 @@ function SpellItApp() {
     setHints(hintLetters);
   };
 
-  useEffect(() => {
-    const inputEl = document.getElementById('input'); 
-    inputEl.focus(); 
-  }, []);
+  const clickHint = (letter) => {
+    if ('_back' === letter) {
+      const backspacedInput = input.substring(0, input.length - 1);
+      setInput(backspacedInput);
+      return;
+    }
 
-  useEffect(() => {
-    updateHintLetters(input);
-  }, [input]);
+    if ('_check' === letter) {
+      return;
+    }
+
+    setInput(input + letter);
+  };
 
   return (
     <>
@@ -58,7 +72,7 @@ function SpellItApp() {
         {hintCount > 0 && (
           <section className="grid grid-cols-1 gap-y-20 content-center bg-gray-200 px-12">
             {hints.map((letter, idx) => (
-              <section key={idx}>
+              <section key={idx} onClick={() => clickHint(letter)}>
                 {1 === letter.length && (
                   <span className="text-2xl font-bold">{letter}</span>
                 )}
