@@ -32,10 +32,6 @@ function SpellItApp() {
     setHints(hintLetters);
   };
 
-  const updateInput = (text) => {
-    setInput(text);
-  };
-
   useEffect(() => {
     updateHintLetters(input);
   }, [input]);
@@ -48,10 +44,7 @@ function SpellItApp() {
         placeholder="Spell it"
         type="text"
         value={input}
-        onChange={(e) => {
-          const text = e?.target?.value;
-          updateInput(text);
-        }}
+        onChange={(e) => setInput(e?.target?.value)}
       />
       
       <section className="body flex h-screen mx-12">
