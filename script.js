@@ -72,12 +72,14 @@ function SpellItApp() {
         )}
 
         <section className="grid grid-cols-1 gap-y-8 w-full items-center justify-items-center">
-          <section>
-            <img
-              className="h-72 w-72"
-              src={`img/targets/${target}.svg`}
-            />
-          </section>
+          {input.length <= target.length && (
+            <section>
+              <img
+                className="h-72 w-72"
+                src={`img/targets/${target}.svg`}
+              />
+            </section>
+          )}
 
           <section className="h-32 text-9xl">{input}</section>
         </section>
