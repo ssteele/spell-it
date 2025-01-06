@@ -6,11 +6,12 @@ const targetList = [
 ];
 const target = targetList[Math.floor(Math.random() * targetList.length)];
 
+const doShowHints = 'true' === localStorage.getItem('state-do-show-hints');
+const hintCount = doShowHints ? Number(localStorage.getItem('state-hint-count')) || 4 : 0;
+
 function SpellItApp() {
   const [input, setInput] = useState('');
   const [hints, setHints] = useState([]);
-
-  const hintCount = 2;
 
   const alphabetLetters = [...'abcdefghijklmnopqrstuvwxyz'];
   const targetLetters = [...target];
