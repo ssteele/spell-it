@@ -1,11 +1,13 @@
 const { useEffect, useState } = React;
 
+const targetList = ['sun', 'bed', 'box', 'can', 'car', 'cat', 'cow', 'dog', 'hat', 'hen', 'pan', 'pig', 'run', 'six', 'ten', 'top'];
+const target = targetList[Math.floor(Math.random() * targetList.length)];
+
 function SpellItApp() {
   const [input, setInput] = useState('');
   const [hints, setHints] = useState([]);
 
-  const hintCount = 4;
-  const target = 'sun';
+  const hintCount = 2;
 
   const alphabetLetters = [...'abcdefghijklmnopqrstuvwxyz'];
   const targetLetters = [...target];
@@ -68,7 +70,7 @@ function SpellItApp() {
           <section className="target">
             <img
               className="h-72 w-72"
-              src={`img/target/${target}.svg`}
+              src={`img/targets/${target}.svg`}
             />
           </section>
 
