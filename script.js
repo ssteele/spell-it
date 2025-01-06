@@ -1,6 +1,9 @@
 const { useEffect, useState } = React;
 
-const targetList = ['sun', 'bed', 'box', 'can', 'car', 'cat', 'cow', 'dog', 'hat', 'hen', 'pan', 'pig', 'run', 'six', 'ten', 'top'];
+const targetList = [
+  'sun', 'bed', 'box', 'can', 'car', 'cat', 'cow', 'dog', 'hat', 'hen', 'pan', 'pig', 'run', 'six', 'ten', 'top', 'bat', 'bag', 'bus',
+  'cup', 'fox', 'leg', 'wet',
+];
 const target = targetList[Math.floor(Math.random() * targetList.length)];
 
 function SpellItApp() {
