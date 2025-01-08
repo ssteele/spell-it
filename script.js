@@ -1,8 +1,8 @@
 const { useEffect, useState } = React;
 
 const targetList = [
-  'sun', 'bed', 'box', 'can', 'car', 'cat', 'cow', 'dog', 'hat', 'hen', 'pan', 'pig', 'run', 'six', 'ten', 'top', 'bat', 'bag', 'bus',
-  'cup', 'fox', 'leg', 'wet',
+  'bag', 'bat', 'bed', 'box', 'bus', 'can', 'car', 'cat', 'cow', 'cup', 'dog', 'fox', 'hat', 'hen', 'leg', 'pan', 'pig', 'run', 'six',
+  'sun', 'ten', 'top', 'wet',
 ];
 const target = targetList[Math.floor(Math.random() * targetList.length)];
 
