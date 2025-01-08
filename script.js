@@ -81,7 +81,7 @@ function SpellItApp() {
                   <span className="text-2xl font-bold">{letter}</span>
                 )}
                 <img
-                  className="max-h-24 max-w-24"
+                  className="h-24 w-24 sm:h-16 sm:w-16"
                   src={`img/abcs/${letter}.svg`}
                 />
               </section>
@@ -93,13 +93,13 @@ function SpellItApp() {
           {input.length <= target.length && (
             <section>
               <img
-                className="h-72 w-72"
+                className="h-72 w-72 sm:h-36 sm:w-36"
                 src={`img/targets/${target}.svg`}
               />
             </section>
           )}
 
-          <section className="h-32 text-9xl">{input}</section>
+          <section className="h-32 text-9xl sm:text-6xl">{input}</section>
         </section>
       </section>
     </>
