@@ -74,14 +74,14 @@ function SpellItApp() {
       
       <section className="flex h-screen">
         {hintCount > 0 && (
-          <section className="grid grid-cols-1 gap-y-20 content-center bg-gray-200 px-12">
+          <section className="grid grid-cols-1 gap-y-20 content-center px-4 bg-gray-200 sm:px-12">
             {hints.map((letter, idx) => (
               <section key={idx} onClick={() => clickHint(letter)}>
                 {1 === letter.length && (
                   <span className="text-2xl font-bold">{letter}</span>
                 )}
                 <img
-                  className="h-24 w-24 sm:h-16 sm:w-16"
+                  className="h-16 w-16 sm:h-24 sm:w-24"
                   src={`img/abcs/${letter}.svg`}
                 />
               </section>
@@ -93,13 +93,13 @@ function SpellItApp() {
           {input.length <= target.length && (
             <section>
               <img
-                className="h-72 w-72 sm:h-36 sm:w-36"
+                className="h-36 w-36 sm:h-72 sm:w-72"
                 src={`img/targets/${target}.svg`}
               />
             </section>
           )}
 
-          <section className="h-32 text-9xl sm:text-6xl">{input}</section>
+          <section className="h-32 text-6xl sm:text-9xl">{input}</section>
         </section>
       </section>
     </>
