@@ -6,8 +6,11 @@ const targetList = [
 ];
 const target = targetList[Math.floor(Math.random() * targetList.length)];
 
-const doShowHints = 'true' === localStorage.getItem('state-do-show-hints');
-const hintCount = doShowHints ? Number(localStorage.getItem('state-hint-count')) || 4 : 0;
+const stateDoShowHints = localStorage.getItem('state-do-show-hints');
+const doShowHints = stateDoShowHints ? 'false' !== stateDoShowHints : true;
+
+const stateHintCount = localStorage.getItem('state-hint-count');
+const hintCount = stateHintCount ? Number(stateHintCount) : 4;
 
 function SpellItApp() {
   const [input, setInput] = useState('');
@@ -73,7 +76,7 @@ function SpellItApp() {
       />
       
       <section className="flex h-screen">
-        {hintCount > 0 && (
+        {doShowHints && hintCount > 0 && (
           <section className="grid grid-cols-1 gap-y-20 content-center px-4 bg-gray-200 sm:px-12">
             {hints.map((letter, idx) => (
               <section key={idx} onClick={() => clickHint(letter)}>

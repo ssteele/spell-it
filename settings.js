@@ -2,10 +2,12 @@ const { useEffect, useState } = React;
 
 function SpellItSettings() {
   const [showHints, setShowHints] = useState(() => {
-    return 'true' === localStorage.getItem('state-do-show-hints');
+    const stateDoShowHints = localStorage.getItem('state-do-show-hints');
+    return stateDoShowHints ? 'false' !== localStorage.getItem('state-do-show-hints') : true;
   });
   const [hintCount, setHintCount] = useState(() => {
-    return localStorage.getItem('state-hint-count') ? Number(localStorage.getItem('state-hint-count')) : 4;
+    const stateHintCount = localStorage.getItem('state-hint-count');
+    return stateHintCount ? Number(stateHintCount) : 4;
   });
 
   const persistShowHints = (doShowHints) => {
