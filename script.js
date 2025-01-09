@@ -99,13 +99,7 @@ function SpellItApp() {
             </section>
           )}
 
-          {!!input && (
-            <section className="h-32 min-w-32 text-6xl sm:text-9xl bg-green-500">{input}</section>
-          )}
-
-          {!input && (
-            <section className="h-32 min-w-32 bg-yellow-500">&nbsp;</section>
-          )}
+          <section className="h-32 min-w-32 text-6xl sm:text-9xl">{input}</section>
         </section>
       </section>
     </>
