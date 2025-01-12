@@ -6,7 +6,9 @@ const wordList = {
     'sun', 'ten', 'top', 'wet',
   ],
   es: [
-    'cama', 'casa', 'gato', 'luna', 'mano', 'mesa', 'moto', 'nube', 'pato', 'pelo', 'piña', 'rana', 'sol', 'taza', 'tren', 'vaca',
+    'agua', 'baño', 'boca', 'bote', 'caja', 'cama', 'casa', 'dos', 'foca', 'fotos', 'gato', 'jugo', 'lobo', 'luna', 'mano', 'mesa', 'mono',
+    'moto', 'nido', 'nube', 'ojos', 'pala', 'pan', 'pata', 'pato', 'pelo', 'pie', 'piña', 'queso', 'rana', 'sol', 'sopa', 'taza', 'toro',
+    'tren', 'tres', 'uno', 'vaca',
   ],
 };
 const letterList = {
