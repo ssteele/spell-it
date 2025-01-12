@@ -80,12 +80,22 @@ function SpellItApp() {
     setInput(input + letter);
   };
 
+  const spellItText = () => {
+    switch (selectedLanguage) {
+      case 'en':
+        return 'Spell it';
+
+      case 'es':
+        return 'Deletrealo';
+    }
+  };
+
   return (
     <>
       <input
         className="fixed p-2 top-4 right-4"
         id="input"
-        placeholder="Spell it"
+        placeholder={spellItText()}
         type="text"
         value={input}
         onChange={(e) => setInput(e?.target?.value)}
