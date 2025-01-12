@@ -1,10 +1,22 @@
 const { useEffect, useState } = React;
 
-const targetList = [
-  'bag', 'bat', 'bed', 'box', 'bus', 'can', 'car', 'cat', 'cow', 'cup', 'dog', 'fox', 'hat', 'hen', 'leg', 'pan', 'pig', 'run', 'six',
-  'sun', 'ten', 'top', 'wet',
-];
-const target = targetList[Math.floor(Math.random() * targetList.length)];
+const wordList = {
+  en: [
+    'bag', 'bat', 'bed', 'box', 'bus', 'can', 'car', 'cat', 'cow', 'cup', 'dog', 'fox', 'hat', 'hen', 'leg', 'pan', 'pig', 'run', 'six',
+    'sun', 'ten', 'top', 'wet',
+  ],
+  es: [
+    'casa', // 'gato', 'perro', 'mesa', 'silla', 'taza',
+  ],
+};
+const letterList = {
+  en: [...'abcdefghijklmnopqrstuvwxyz'],
+  es: [...'abcdefghijklmnñopqrstuvwxyz'],
+};
+const supportedLanguages = Object.keys(wordList);
+
+const stateSelectedLanguage = localStorage.getItem('state-selected-language');
+const selectedLanguage = (stateSelectedLanguage && supportedLanguages.includes(stateSelectedLanguage)) ? stateSelectedLanguage : 'en';
 
 const stateDoShowHints = localStorage.getItem('state-do-show-hints');
 const doShowHints = stateDoShowHints ? 'false' !== stateDoShowHints : true;
@@ -12,11 +24,14 @@ const doShowHints = stateDoShowHints ? 'false' !== stateDoShowHints : true;
 const stateHintCount = localStorage.getItem('state-hint-count');
 const hintCount = stateHintCount ? Number(stateHintCount) : 4;
 
+const targetList = wordList[selectedLanguage];
+const target = targetList[Math.floor(Math.random() * targetList.length)];
+const alphabetLetters = letterList[selectedLanguage];
+
 function SpellItApp() {
   const [input, setInput] = useState('');
   const [hints, setHints] = useState([]);
 
-  const alphabetLetters = [...'abcdefghijklmnopqrstuvwxyz'];
   const targetLetters = [...target];
 
   useEffect(() => {
@@ -85,7 +100,7 @@ function SpellItApp() {
                 )}
                 <img
                   className="h-16 w-16 sm:h-24 sm:w-24"
-                  src={`img/abcs/${letter}.svg`}
+                  src={`img/${selectedLanguage}/abcs/${letter}.svg`}
                 />
               </section>
             ))} 
@@ -97,7 +112,7 @@ function SpellItApp() {
             <section>
               <img
                 className="h-36 w-36 sm:h-72 sm:w-72"
-                src={`img/targets/${target}.svg`}
+                src={`img/${selectedLanguage}/targets/${target}.svg`}
               />
             </section>
           )}
