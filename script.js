@@ -122,7 +122,11 @@ function SpellItApp() {
         {doShowHints && hintCount > 0 && (
           <section className="grid grid-cols-1 gap-y-20 content-center px-4 bg-gray-200 sm:px-12">
             {hints.map((letter, idx) => (
-              <section key={idx} onClick={() => clickHint(letter)}>
+              <section
+                className="cursor-pointer"
+                key={idx}
+                onClick={() => clickHint(letter)}
+              >
                 {1 === letter.length && (
                   <span className="text-2xl font-bold">{letter}</span>
                 )}
