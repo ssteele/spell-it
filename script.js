@@ -6,7 +6,7 @@ const wordList = {
     'sun', 'ten', 'top', 'wet',
   ],
   es: [
-    'casa', // 'gato', 'perro', 'mesa', 'silla', 'taza',
+    'cama', 'casa', 'gato', 'luna', 'mano', 'mesa', 'moto', 'nube', 'pato', 'pelo', 'piña', 'rana', 'sol', 'taza', 'tren', 'vaca',
   ],
 };
 const letterList = {
@@ -73,6 +73,7 @@ function SpellItApp() {
     }
 
     if ('_check' === letter) {
+      window.location.reload();
       return;
     }
 
