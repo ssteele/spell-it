@@ -23,12 +23,18 @@ const selectedLanguage = (stateSelectedLanguage && supportedLanguages.includes(s
 const stateDoShowHints = localStorage.getItem('state-do-show-hints');
 const doShowHints = stateDoShowHints ? 'false' !== stateDoShowHints : true;
 
+const stateDoHintsMatchMouth = localStorage.getItem('state-do-hints-match-mouth');
+const doHintsMatchMouth = stateDoHintsMatchMouth ? 'false' !== stateDoHintsMatchMouth : true;
+
 const stateHintCount = localStorage.getItem('state-hint-count');
 const hintCount = stateHintCount ? Number(stateHintCount) : 4;
 
 const targetList = wordList[selectedLanguage];
 const target = targetList[Math.floor(Math.random() * targetList.length)];
+
 const alphabetLetters = letterList[selectedLanguage];
+const vowels = alphabetLetters.filter((letter) => 'aeiou'.includes(letter));
+const consonants = alphabetLetters.filter((letter) => !'aeiou'.includes(letter));
 
 function SpellItApp() {
   const [input, setInput] = useState('');
@@ -58,7 +64,16 @@ function SpellItApp() {
 
     const targetIndex = input.length;
     const targetLetter = targetLetters[targetIndex];
-    const hintLetters = [...alphabetLetters]
+
+    let letters = alphabetLetters;
+    if (doHintsMatchMouth) {
+      letters = consonants;
+      if (vowels.includes(targetLetter)) {
+        letters = vowels;
+      }
+    }
+
+    const hintLetters = [...letters]
       .filter((letter) => letter !== targetLetter)
       .sort(() => Math.random() - 0.5)
       .slice(0, hintCount - 1)
