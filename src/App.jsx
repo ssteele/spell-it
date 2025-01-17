@@ -1,23 +1,10 @@
 import { useEffect, useState } from 'react'
-// import reactLogo from './assets/react.svg'
+
+import { LetterList } from './Constants/Letters';
+import { WordList } from './Constants/Words';
 import './App.css'
 
-const wordList = {
-  en: [
-    'ant', 'bag', 'bat', 'bed', 'box', 'bug', 'bus', 'can', 'car', 'cat', 'cow', 'cup', 'dog', 'fan', 'fox', 'hat', 'hen', 'jar', 'leg',
-    'map', 'net', 'owl', 'pan', 'pig', 'pot', 'run', 'saw', 'six', 'sun', 'ten', 'top', 'tub', 'wet',
-  ],
-  es: [
-    'agua', 'baño', 'boca', 'bote', 'caja', 'cama', 'casa', 'dos', 'foca', 'fotos', 'gato', 'jugo', 'lobo', 'luna', 'mano', 'mesa', 'mono',
-    'moto', 'nido', 'nube', 'ojos', 'pala', 'pan', 'pata', 'pato', 'pelo', 'pie', 'piña', 'queso', 'rana', 'sol', 'sopa', 'taza', 'toro',
-    'tren', 'tres', 'uno', 'vaca',
-  ],
-};
-const letterList = {
-  en: [...'abcdefghijklmnopqrstuvwxyz'],
-  es: [...'abcdefghijklmnñopqrstuvwxyz'],
-};
-const supportedLanguages = Object.keys(wordList);
+const SUPPORTED_LANGUAGES = Object.keys(WordList);
 
 // db: request
 const dbTable = 'MyTestDatabase';
@@ -57,7 +44,7 @@ request.onsuccess = (event) => {
 };
 
 const stateSelectedLanguage = localStorage.getItem('state-selected-language');
-const selectedLanguage = (stateSelectedLanguage && supportedLanguages.includes(stateSelectedLanguage)) ? stateSelectedLanguage : 'en';
+const selectedLanguage = (stateSelectedLanguage && SUPPORTED_LANGUAGES.includes(stateSelectedLanguage)) ? stateSelectedLanguage : 'en';
 
 const stateDoShowHints = localStorage.getItem('state-do-show-hints');
 const doShowHints = stateDoShowHints ? 'false' !== stateDoShowHints : true;
@@ -68,10 +55,10 @@ const doHintsMatchMouth = stateDoHintsMatchMouth ? 'false' !== stateDoHintsMatch
 const stateHintCount = localStorage.getItem('state-hint-count');
 const hintCount = stateHintCount ? Number(stateHintCount) : 4;
 
-const targetList = wordList[selectedLanguage];
+const targetList = WordList[selectedLanguage];
 const target = targetList[Math.floor(Math.random() * targetList.length)];
 
-const alphabetLetters = letterList[selectedLanguage];
+const alphabetLetters = LetterList[selectedLanguage];
 const vowels = alphabetLetters.filter((letter) => 'aeiou'.includes(letter));
 const consonants = alphabetLetters.filter((letter) => !'aeiou'.includes(letter));
 
