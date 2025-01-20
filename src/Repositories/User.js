@@ -1,4 +1,4 @@
-import { getDatabase } from '../Utils/Database.js';
+import { getDatabase } from '@/Utils/Database.js';
 
 export async function addUser(user) {
   const db = await getDatabase();

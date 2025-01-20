@@ -1,3 +1,5 @@
+export const SupportedLanguages = ['en', 'es'];
+
 export const WordList = {
   en: [
     'ant', 'bag', 'bat', 'bed', 'box', 'bug', 'bus', 'can', 'car', 'cat', 'cow', 'cup', 'dog', 'fan', 'fox', 'hat', 'hen', 'jar', 'leg',

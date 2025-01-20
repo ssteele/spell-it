@@ -1,4 +1,4 @@
-import { migration1 } from '../Migrations/Migration_1.js';
+import { migration1 } from '@/Migrations/Migration_1.js';
 
 const dbTable = 'SpellingGameDB';
 const dbVersion = 1;
