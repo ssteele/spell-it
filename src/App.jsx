@@ -2,46 +2,12 @@ import { useEffect, useState } from 'react'
 
 import { LetterList } from './Constants/Letters';
 import { WordList } from './Constants/Words';
+import { getDatabase } from './Utils/Database.js';
 import './App.css'
 
+const db = getDatabase();
+
 const SUPPORTED_LANGUAGES = Object.keys(WordList);
-
-// db: request
-const dbTable = 'MyTestDatabase';
-const dbVersion = 2;
-const request = window.indexedDB.open(dbTable, dbVersion);
-
-request.onupgradeneeded = (event) => {
-  const db = event?.target?.result;
-
-  if (!db.objectStoreNames.contains('users')) {
-    const objectStore = db.createObjectStore('users', { keyPath: 'id', autoIncrement: true });
-    objectStore.createIndex('name', 'name', { unique: false });
-    objectStore.createIndex('email', 'email', { unique: true });
-  }
-};
-request.onerror = (event) => {
-  console.error('Error opening database', event.target.error);
-};
-request.onsuccess = (event) => {
-  const db = event?.target?.result;
-  db.onerror = (event) => {
-    console.error('IndexedDB database error:', event.target.error?.message);
-  };
-
-  const transaction = db.transaction('users', 'readwrite');
-  const objectStore = transaction.objectStore('users');
-
-  const addRequest = objectStore.add({ name: 'Alice', email: 'alice@example.com' });
-
-  addRequest.onsuccess = function() {
-    console.log('User added successfully');
-  };
-
-  addRequest.onerror = function(event) {
-    console.error('Error adding user:', event.target.error);
-  }; 
-};
 
 const stateSelectedLanguage = localStorage.getItem('state-selected-language');
 const selectedLanguage = (stateSelectedLanguage && SUPPORTED_LANGUAGES.includes(stateSelectedLanguage)) ? stateSelectedLanguage : 'en';
