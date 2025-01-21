@@ -1,24 +1,48 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { SupportedLanguages } from '@/Constants/Words';
+import { getUsers } from '@/Repositories/User';
 
 export function Settings({ db }) {
+  const [users, setUsers] = useState([]);
+
+  const [selectedUser, setSelectedUser] = useState(() => {
+    const stateSelectedUser = localStorage.getItem('state-selected-user');
+    return stateSelectedUser ? stateSelectedUser : '';
+  });
+
   const [selectedLanguage, setSelectedLanguage] = useState(() => {
     const stateSelectedLanguage = localStorage.getItem('state-selected-language');
     return (stateSelectedLanguage && SupportedLanguages.includes(stateSelectedLanguage)) ? stateSelectedLanguage : 'en';
   });
+
   const [showHints, setShowHints] = useState(() => {
     const stateDoShowHints = localStorage.getItem('state-do-show-hints');
     return stateDoShowHints ? 'false' !== stateDoShowHints : true;
   });
+
   const [hintsMatchMouth, setHintsMatchMouth] = useState(() => {
     const stateDoHintsMatchMouth = localStorage.getItem('state-do-hints-match-mouth');
     return stateDoHintsMatchMouth ? 'false' !== stateDoHintsMatchMouth : true;
   });
+
   const [hintCount, setHintCount] = useState(() => {
     const stateHintCount = localStorage.getItem('state-hint-count');
     return stateHintCount ? Number(stateHintCount) : 4;
   });
+
+  useEffect(() => {
+    getUsers(db).then((users) => {
+      setUsers(users);
+    }).catch((error) => {
+      console.error('Error getting users:', error);
+    });
+  }, [db]);
+
+  const persistSelectedUser = (user) => {
+    setSelectedUser(user);
+    localStorage.setItem('state-selected-user', user);
+  }
 
   const persistSelectedLanguage = (language) => {
     setSelectedLanguage(language);
@@ -46,6 +70,27 @@ export function Settings({ db }) {
         <h1 className="mb-20 text-6xl lg:mb-12 lg:text-4xl">Settings</h1>
 
         <section className="text-4xl lg:text-2xl">
+          <section className="mt-8 lg:mt-4 grid grid-cols-2 gap-12">
+            <label htmlFor="selectUser">User:</label>
+            <select
+              name="selectUser"
+              id="selectUser"
+              value={selectedUser}
+              onChange={(e) => persistSelectedUser(e?.target?.value)}
+            >
+              {!selectedUser && (
+                <option value="0"></option>
+              )}
+
+              {users.length && users.map((u, idx) => (
+                <option
+                  key={idx}
+                  value={u?.id}
+                >{u?.name}</option>
+              ))}
+            </select>
+          </section>
+
           <section className="mt-8 lg:mt-4 grid grid-cols-2 gap-12">
             <label htmlFor="selectLanguage">Language:</label>
             <select
@@ -99,7 +144,6 @@ export function Settings({ db }) {
       </section>
     </>
   )
-
 }
 
 export default Settings

@@ -3,7 +3,7 @@ import Settings from '@/Pages/Settings';
 import { getDatabase } from '@/Utils/Database.js';
 import '@/App.css'
 
-const db = getDatabase();
+const db = await getDatabase();
 
 const urlParams = new URLSearchParams(window.location.search);
 const page = urlParams.get('p');

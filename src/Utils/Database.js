@@ -39,7 +39,7 @@ function getDatabase() {
 
       switch (dbVersion) {
         case 1:
-          migration1();
+          migration1(db);
           break;
       
         default:
