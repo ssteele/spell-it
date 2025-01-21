@@ -1,9 +1,11 @@
 import { migration1 } from '@/Migrations/Migration_1.js';
+import { migration2 } from '@/Migrations/Migration_2.js';
 
 const dbTable = 'SpellingGameDB';
 const dbVersion = 1;
 
 let db = null;
+let upgradeNeeded = false;
 
 function getDatabase() {
   return new Promise((resolve, reject) => {
@@ -16,7 +18,8 @@ function getDatabase() {
     const request = indexedDB.open(dbTable, dbVersion);
 
     request.onupgradeneeded = (event) => {
-      const db = event.target.result;
+      upgradeNeeded = true;
+      db = event.target.result;
 
       // set up object stores (only runs if the DB doesn't exist or version changes)
       if (!db.objectStoreNames.contains('users')) {
@@ -36,19 +39,27 @@ function getDatabase() {
         progressStore.createIndex('userIdIndex', 'userId', { unique: false });
         progressStore.createIndex('wordIdIndex', 'wordId', { unique: false });
       }
-
-      switch (dbVersion) {
-        case 1:
-          migration1(db);
-          break;
-      
-        default:
-          break;
-      }
     };
 
     request.onsuccess = (event) => {
       db = event.target.result;
+
+      if (upgradeNeeded) {
+        switch (db?.version) {
+          case 1:
+            migration1(db);
+            break;
+
+          case 2:
+            migration2(db);
+            break;
+
+          default:
+            break;
+        }
+      }
+
+      upgradeNeeded = false;
       resolve(db); // return the database connection
     };
 

@@ -22,7 +22,7 @@ export async function getUsers(db) {
       resolve(request.result);
     };
     request.onerror = (event) => {
-      rejectj(event.target.error);
+      reject(event.target.error);
     };
   });
 }
