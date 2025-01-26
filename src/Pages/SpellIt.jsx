@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 
 import { LetterList } from '@/Constants/Letters';
-import { SupportedLanguages, WordList } from '@/Constants/Words';
+import { SupportedLanguages } from '@/Constants/Words';
+import { getWordsByLevelAndLanguage } from '@/Repositories/Word';
 
 const stateSelectedLanguage = localStorage.getItem('state-selected-language');
 const selectedLanguage = (stateSelectedLanguage && SupportedLanguages.includes(stateSelectedLanguage)) ? stateSelectedLanguage : 'en';
@@ -15,9 +16,6 @@ const doHintsMatchMouth = stateDoHintsMatchMouth ? 'false' !== stateDoHintsMatch
 const stateHintCount = localStorage.getItem('state-hint-count');
 const hintCount = stateHintCount ? Number(stateHintCount) : 4;
 
-const targetList = WordList[selectedLanguage];
-const target = targetList[Math.floor(Math.random() * targetList.length)];
-
 const alphabetLetters = LetterList[selectedLanguage];
 const vowels = alphabetLetters.filter((letter) => 'aeiou'.includes(letter));
 const consonants = alphabetLetters.filter((letter) => !'aeiou'.includes(letter));
@@ -25,25 +23,56 @@ const consonants = alphabetLetters.filter((letter) => !'aeiou'.includes(letter))
 export function SpellIt({ db }) {
   const [input, setInput] = useState('');
   const [hints, setHints] = useState([]);
-
-  const targetLetters = [...target];
+  const [words, setWords] = useState([]);
+  const [targetWord, setTargetWord] = useState([]);
+  const [targetLetters, setTargetLetters] = useState([]);
 
   useEffect(() => {
-    const inputEl = document.getElementById('input'); 
-    inputEl.focus(); 
+    focusInput();
   }, []);
 
   useEffect(() => {
+    getWordsByLevelAndLanguage(db, 0, selectedLanguage).then((words) => {
+      setWords(words);
+      renderTargetWord(words);
+    }).catch((error) => {
+      console.error('Error getting words:', error);
+    });
+  }, [db]);
+
+  useEffect(() => {
+    updateHintLetters('');
+  }, [targetWord]);
+
+  useEffect(() => {
     updateHintLetters(input);
+    focusInput();
   }, [input]);
 
+  const focusInput = () => {
+    const inputEl = document.getElementById('input'); 
+    inputEl.focus();
+  }
+
+  const renderTargetWord = (words) => {
+    const targetWord = words[Math.floor(Math.random() * words?.length)];
+    setTargetWord(targetWord);
+    setTargetLetters([...targetWord?.value]);
+    setInput('');
+    focusInput();
+  };
+
   const updateHintLetters = (input) => {
-    if (input !== target.slice(0, input.length)) {
+    if (!targetWord?.value) {
+      return;
+    }
+
+    if (input !== targetWord?.value.slice(0, input.length)) {
       setHints(['_back']);
       return;
     }
 
-    if (input === target) {
+    if (input === targetWord?.value) {
       setHints(['_check']);
       return;
     }
@@ -76,12 +105,18 @@ export function SpellIt({ db }) {
     }
 
     if ('_check' === letter) {
-      window.location.reload();
+      renderTargetWord(words);
       return;
     }
 
     setInput(input + letter);
   };
+
+  const listenToKey = (key) => {
+    if ('Enter' === key && input === targetWord?.value) {
+      renderTargetWord(words);
+    }
+  }
 
   const spellItText = () => {
     switch (selectedLanguage) {
@@ -96,14 +131,16 @@ export function SpellIt({ db }) {
   return (
     <>
       <input
+        autoComplete="off"
         className="fixed p-2 top-4 right-4"
         id="input"
         placeholder={spellItText()}
         type="text"
         value={input}
+        onKeyUp={(e) => listenToKey(e?.key)}
         onChange={(e) => setInput(e?.target?.value)}
       />
-      
+
       <section className="flex h-screen">
         {doShowHints && hintCount > 0 && (
           <section className="grid grid-cols-1 gap-y-20 content-center px-4 bg-gray-200 sm:px-12">
@@ -126,11 +163,11 @@ export function SpellIt({ db }) {
         )}
 
         <section className="grid grid-cols-1 gap-y-8 w-full items-center justify-items-center">
-          {input.length <= target.length && (
+          {!!targetWord?.value && (input.length <= targetWord?.value?.length) && (
             <section>
               <img
                 className="h-36 w-36 sm:h-72 sm:w-72"
-                src={`img/${selectedLanguage}/targets/${target}.svg`}
+                src={`img/${selectedLanguage}/targets/${targetWord?.value}.svg`}
               />
             </section>
           )}

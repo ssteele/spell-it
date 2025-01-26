@@ -32,6 +32,7 @@ function getDatabase() {
         const wordStore = db.createObjectStore('words', { keyPath: 'id', autoIncrement: true, });
         wordStore.createIndex('languageIndex', 'language', { unique: false });
         wordStore.createIndex('levelIndex', 'level', { unique: false });
+        wordStore.createIndex('levelAndLanguageIndex', ['level', 'language'], { unique: false });
       }
 
       if (!db.objectStoreNames.contains('progress')) {
