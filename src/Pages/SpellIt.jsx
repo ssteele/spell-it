@@ -193,7 +193,7 @@ export function SpellIt({ db }) {
         </section>
       </section>
 
-      <section className="fixed bottom-4 right-4">{user?.name}</section>
+      <section className="fixed bottom-4 right-4 text-xs">{user?.name}</section>
     </>
   )
 }
