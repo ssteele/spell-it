@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react'
 
 import { LetterList } from '@/Constants/Letters';
 import { SupportedLanguages } from '@/Constants/Words';
+import { getUser } from '@/Repositories/User';
 import { getWordsByLevelAndLanguage } from '@/Repositories/Word';
+
+const stateSelectedUserId = localStorage.getItem('state-selected-user');
+const selectedUserId = stateSelectedUserId ? Number(stateSelectedUserId) : null;
 
 const stateSelectedLanguage = localStorage.getItem('state-selected-language');
 const selectedLanguage = (stateSelectedLanguage && SupportedLanguages.includes(stateSelectedLanguage)) ? stateSelectedLanguage : 'en';
@@ -21,10 +25,11 @@ const vowels = alphabetLetters.filter((letter) => 'aeiou'.includes(letter));
 const consonants = alphabetLetters.filter((letter) => !'aeiou'.includes(letter));
 
 export function SpellIt({ db }) {
+  const [user, setUser] = useState({});
   const [input, setInput] = useState('');
   const [hints, setHints] = useState([]);
   const [words, setWords] = useState([]);
-  const [targetWord, setTargetWord] = useState([]);
+  const [targetWord, setTargetWord] = useState('');
   const [targetLetters, setTargetLetters] = useState([]);
 
   useEffect(() => {
@@ -32,13 +37,25 @@ export function SpellIt({ db }) {
   }, []);
 
   useEffect(() => {
-    getWordsByLevelAndLanguage(db, 0, selectedLanguage).then((words) => {
+    if (selectedUserId) {
+      getUser(db, selectedUserId).then((u) => {
+        setUser(u);
+      }).catch((error) => {
+        console.error('Error getting user:', error);
+        setUser({});
+      });
+    }
+  }, [db]);
+
+  useEffect(() => {
+    const currentLevel = user?.currentLevel || 0;
+    getWordsByLevelAndLanguage(db, currentLevel, selectedLanguage).then((words) => {
       setWords(words);
       renderTargetWord(words);
     }).catch((error) => {
       console.error('Error getting words:', error);
     });
-  }, [db]);
+  }, [user]);
 
   useEffect(() => {
     updateHintLetters('');
@@ -175,6 +192,8 @@ export function SpellIt({ db }) {
           <section className="h-32 min-w-32 text-6xl sm:text-9xl">{input}</section>
         </section>
       </section>
+
+      <section className="fixed bottom-4 right-4">{user?.name}</section>
     </>
   )
 }
