@@ -6,7 +6,7 @@ import { getUser } from '@/Repositories/User';
 import { getWordsByLevelAndLanguage } from '@/Repositories/Word';
 
 const stateSelectedUserId = localStorage.getItem('state-selected-user-id');
-const selectedUserId = stateSelectedUserId ? Number(stateSelectedUserId) : null;
+const selectedUserId = stateSelectedUserId ? stateSelectedUserId : null;
 
 const stateSelectedLanguageCode = localStorage.getItem('state-selected-language-code');
 const selectedLanguageCode = (stateSelectedLanguageCode && SupportedLanguageCodes.includes(stateSelectedLanguageCode))
@@ -40,7 +40,7 @@ export function SpellIt({ db }) {
 
   useEffect(() => {
     if (selectedUserId) {
-      getUser(db, selectedUserId).then((u) => {
+      getUser(db, Number(selectedUserId)).then((u) => {
         setUser(u);
       }).catch((error) => {
         console.error('Error getting user:', error);

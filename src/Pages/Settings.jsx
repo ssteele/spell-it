@@ -67,8 +67,9 @@ export function Settings({ db }) {
   }
 
   const persistSelectedUserLevel = (level) => {
-    setSelectedUserLevel(level);
-    updateUser(db, { ...user, currentLevel: level });
+    const numberLevel = Number(level);
+    setSelectedUserLevel(numberLevel);
+    updateUser(db, { ...user, currentLevel: numberLevel });
   }
 
   const persistDoShowHints = (doShowHints) => {
