@@ -1,4 +1,4 @@
-export const SupportedLanguages = ['en', 'es'];
+export const SupportedLanguageCodes = ['en', 'es'];
 
 export const SupportedLanguageMeta = [
   {
