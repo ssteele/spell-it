@@ -13,6 +13,9 @@ const selectedLanguageCode = (stateSelectedLanguageCode && SupportedLanguageCode
   ? stateSelectedLanguageCode
   : 'en';
 
+const stateRepeatThreshold = localStorage.getItem('state-repeat-threshold');
+const repeatThreshold = stateRepeatThreshold ? Number(stateRepeatThreshold) : 8;
+
 const stateDoShowHints = localStorage.getItem('state-do-show-hints');
 const doShowHints = stateDoShowHints ? 'false' !== stateDoShowHints : true;
 
@@ -31,6 +34,7 @@ export function SpellIt({ db }) {
   const [input, setInput] = useState('');
   const [hints, setHints] = useState([]);
   const [words, setWords] = useState([]);
+  const [previousWordsSet, setPreviousWordsSet] = useState(new Set());
   const [targetWord, setTargetWord] = useState('');
   const [targetLetters, setTargetLetters] = useState([]);
 
@@ -74,14 +78,40 @@ export function SpellIt({ db }) {
     inputEl.focus();
   }
 
-  const renderTargetWord = (words) => {
+  const getRandomTargetWord = (words) => {
     if (words?.length) {
       const targetWord = words[Math.floor(Math.random() * words?.length)];
+      if (previousWordsSet.has(targetWord?.value)) {
+        return getRandomTargetWord(words);
+      }
+      return targetWord;
+    }
+  };
+
+  const savePreviousWord = (previousWord) => {
+    if (previousWord) {
+      previousWordsSet.add(previousWord);
+      if (previousWordsSet.size > repeatThreshold) {
+        const [firstIn] = previousWordsSet;
+        previousWordsSet.delete(firstIn);
+      }
+      setPreviousWordsSet(previousWordsSet);
+    }
+  };
+
+  const renderTargetWord = (words) => {
+    if (words?.length) {
+      const targetWord = getRandomTargetWord(words);
       setTargetWord(targetWord);
       setTargetLetters([...targetWord?.value]);
       setInput('');
       focusInput();
     }
+  };
+
+  const nextWord = (previousWord, words) => {
+    savePreviousWord(previousWord);
+    renderTargetWord(words);
   };
 
   const updateHintLetters = (input) => {
@@ -127,7 +157,7 @@ export function SpellIt({ db }) {
     }
 
     if ('_check' === letter) {
-      renderTargetWord(words);
+      nextWord(input, words);
       return;
     }
 
@@ -136,7 +166,7 @@ export function SpellIt({ db }) {
 
   const listenToKey = (key) => {
     if ('Enter' === key && input === targetWord?.value) {
-      renderTargetWord(words);
+      nextWord(input, words);
     }
   }
 

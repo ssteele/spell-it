@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { SupportedLanguageCodes, SupportedLanguageMeta } from '@/Constants/Words';
 import { getUser, getUsers, updateUser } from '@/Repositories/User';
+import { SupportedLanguageLevels } from '../Constants/Words';
 
 export function Settings({ db }) {
   const [users, setUsers] = useState([]);
@@ -19,6 +20,11 @@ export function Settings({ db }) {
   const [selectedLanguageCode, setSelectedLanguageCode] = useState(() => {
     const stateSelectedLanguageCode = localStorage.getItem('state-selected-language-code');
     return (stateSelectedLanguageCode && SupportedLanguageCodes.includes(stateSelectedLanguageCode)) ? stateSelectedLanguageCode : 'en';
+  });
+
+  const [repeatThreshold, setRepeatThreshold] = useState(() => {
+    const stateRepeatThreshold = localStorage.getItem('state-repeat-threshold');
+    return stateRepeatThreshold ? stateRepeatThreshold : 8;
   });
 
   const [doShowHints, setDoShowHints] = useState(() => {
@@ -61,15 +67,20 @@ export function Settings({ db }) {
     localStorage.setItem('state-selected-user-id', userId);
   }
 
+  const persistSelectedUserLevel = (level) => {
+    const numberLevel = Number(level);
+    setSelectedUserLevel(numberLevel);
+    updateUser(db, { ...user, currentLevel: numberLevel });
+  }
+
   const persistSelectedLanguageCode = (languageCode) => {
     setSelectedLanguageCode(languageCode);
     localStorage.setItem('state-selected-language-code', languageCode);
   }
 
-  const persistSelectedUserLevel = (level) => {
-    const numberLevel = Number(level);
-    setSelectedUserLevel(numberLevel);
-    updateUser(db, { ...user, currentLevel: numberLevel });
+  const persistRepeatThreshold = (count) => {
+    setRepeatThreshold(count);
+    localStorage.setItem('state-repeat-threshold', count);
   }
 
   const persistDoShowHints = (doShowHints) => {
@@ -115,6 +126,23 @@ export function Settings({ db }) {
           </section>
 
           <section className="mt-8 lg:mt-4 grid grid-cols-2 gap-12">
+            <label htmlFor="selectUserLevel">Level:</label>
+            <select
+              name="selectUserLevel"
+              id="selectUserLevel"
+              value={selectedUserLevel}
+              onChange={(e) => persistSelectedUserLevel(e?.target?.value)}
+            >
+              { SupportedLanguageLevels.map((level, idx) => (
+                <option
+                  key={idx}
+                  value={level}
+                >{level}</option>
+              ))}
+            </select>
+          </section>
+
+          <section className="mt-8 lg:mt-4 grid grid-cols-2 gap-12">
             <label htmlFor="selectLanguageCode">Language:</label>
             <select
               name="selectLanguageCode"
@@ -132,17 +160,13 @@ export function Settings({ db }) {
           </section>
 
           <section className="mt-8 lg:mt-4 grid grid-cols-2 gap-12">
-            <label htmlFor="selectUserLevel">Level:</label>
-            <select
-              name="selectUserLevel"
-              id="selectUserLevel"
-              value={selectedUserLevel}
-              onChange={(e) => persistSelectedUserLevel(e?.target?.value)}
-            >
-              <option value="0">0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-            </select>
+            <label htmlFor="selectLanguageCode">Repeat Threshold:</label>
+              <input
+                placeholder="10"
+                type="text"
+                value={repeatThreshold}
+                onChange={(e) => persistRepeatThreshold(e?.target?.value)}
+              />
           </section>
 
           <section className="mt-8 px-4 py-6 grid grid-cols-1 gap-x-12 border-2 border-gray-300 rounded-lg lg:mt-4">
