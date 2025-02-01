@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { SupportedLanguages, SupportedLanguageMeta } from '@/Constants/Words';
+import { SupportedLanguageCodes, SupportedLanguageMeta } from '@/Constants/Words';
 import { getUser, getUsers, updateUser } from '@/Repositories/User';
 
 export function Settings({ db }) {
@@ -18,15 +18,15 @@ export function Settings({ db }) {
 
   const [selectedLanguageCode, setSelectedLanguageCode] = useState(() => {
     const stateSelectedLanguageCode = localStorage.getItem('state-selected-language-code');
-    return (stateSelectedLanguageCode && SupportedLanguages.includes(stateSelectedLanguageCode)) ? stateSelectedLanguageCode : 'en';
+    return (stateSelectedLanguageCode && SupportedLanguageCodes.includes(stateSelectedLanguageCode)) ? stateSelectedLanguageCode : 'en';
   });
 
-  const [showHints, setShowHints] = useState(() => {
+  const [doShowHints, setDoShowHints] = useState(() => {
     const stateDoShowHints = localStorage.getItem('state-do-show-hints');
     return stateDoShowHints ? 'false' !== stateDoShowHints : true;
   });
 
-  const [hintsMatchMouth, setHintsMatchMouth] = useState(() => {
+  const [doHintsMatchMouth, setDoHintsMatchMouth] = useState(() => {
     const stateDoHintsMatchMouth = localStorage.getItem('state-do-hints-match-mouth');
     return stateDoHintsMatchMouth ? 'false' !== stateDoHintsMatchMouth : true;
   });
@@ -71,13 +71,13 @@ export function Settings({ db }) {
     updateUser(db, { ...user, currentLevel: level });
   }
 
-  const persistShowHints = (doShowHints) => {
-    setShowHints(doShowHints);
+  const persistDoShowHints = (doShowHints) => {
+    setDoShowHints(doShowHints);
     localStorage.setItem('state-do-show-hints', doShowHints);
   }
 
   const persistDoHintsMatchMouth = (doHintsMatchMouth) => {
-    setHintsMatchMouth(doHintsMatchMouth);
+    setDoHintsMatchMouth(doHintsMatchMouth);
     localStorage.setItem('state-do-hints-match-mouth', doHintsMatchMouth);
   }
 
@@ -147,21 +147,21 @@ export function Settings({ db }) {
           <section className="mt-8 px-4 py-6 grid grid-cols-1 gap-x-12 border-2 border-gray-300 rounded-lg lg:mt-4">
             <section>
               <input
-                checked={showHints}
+                checked={doShowHints}
                 className="h-6 w-6"
-                id="showHints"
-                name="showHints"
+                id="doShowHints"
+                name="doShowHints"
                 type="checkbox"
-                onChange={(e) => persistShowHints(e?.target?.checked)}
+                onChange={(e) => persistDoShowHints(e?.target?.checked)}
               />
-              <label htmlFor="showHints"> Hints:</label>
+              <label htmlFor="doShowHints"> Hints:</label>
             </section>
 
-            {showHints && (
+            {doShowHints && (
               <section className="mt-4 mx-8 grid grid-cols-1 gap-y-2 lg:grid-cols-2 lg:gap-x-12">
                 <section>
                   <input
-                    checked={hintsMatchMouth}
+                    checked={doHintsMatchMouth}
                     className="h-6 w-6"
                     id="doHintsMatchMouth"
                     name="doHintsMatchMouth"

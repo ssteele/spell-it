@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react'
 
 import { LetterList } from '@/Constants/Letters';
-import { SupportedLanguages } from '@/Constants/Words';
+import { SupportedLanguageCodes } from '@/Constants/Words';
 import { getUser } from '@/Repositories/User';
 import { getWordsByLevelAndLanguage } from '@/Repositories/Word';
 
-const stateSelectedUserId = localStorage.getItem('state-selected-user');
+const stateSelectedUserId = localStorage.getItem('state-selected-user-id');
 const selectedUserId = stateSelectedUserId ? Number(stateSelectedUserId) : null;
 
-const stateSelectedLanguage = localStorage.getItem('state-selected-language');
-const selectedLanguage = (stateSelectedLanguage && SupportedLanguages.includes(stateSelectedLanguage)) ? stateSelectedLanguage : 'en';
+const stateSelectedLanguageCode = localStorage.getItem('state-selected-language-code');
+const selectedLanguageCode = (stateSelectedLanguageCode && SupportedLanguageCodes.includes(stateSelectedLanguageCode))
+  ? stateSelectedLanguageCode
+  : 'en';
 
 const stateDoShowHints = localStorage.getItem('state-do-show-hints');
 const doShowHints = stateDoShowHints ? 'false' !== stateDoShowHints : true;
@@ -20,7 +22,7 @@ const doHintsMatchMouth = stateDoHintsMatchMouth ? 'false' !== stateDoHintsMatch
 const stateHintCount = localStorage.getItem('state-hint-count');
 const hintCount = stateHintCount ? Number(stateHintCount) : 4;
 
-const alphabetLetters = LetterList[selectedLanguage];
+const alphabetLetters = LetterList[selectedLanguageCode];
 const vowels = alphabetLetters.filter((letter) => 'aeiou'.includes(letter));
 const consonants = alphabetLetters.filter((letter) => !'aeiou'.includes(letter));
 
@@ -49,7 +51,7 @@ export function SpellIt({ db }) {
 
   useEffect(() => {
     const currentLevel = user?.currentLevel || 0;
-    getWordsByLevelAndLanguage(db, currentLevel, selectedLanguage).then((words) => {
+    getWordsByLevelAndLanguage(db, currentLevel, selectedLanguageCode).then((words) => {
       setWords(words);
       renderTargetWord(words);
     }).catch((error) => {
@@ -172,7 +174,7 @@ export function SpellIt({ db }) {
                 )}
                 <img
                   className="h-16 w-16 sm:h-24 sm:w-24"
-                  src={`img/${selectedLanguage}/abcs/${letter}.svg`}
+                  src={`img/${selectedLanguageCode}/abcs/${letter}.svg`}
                 />
               </section>
             ))} 
@@ -184,7 +186,7 @@ export function SpellIt({ db }) {
             <section>
               <img
                 className="h-36 w-36 sm:h-72 sm:w-72"
-                src={`img/${selectedLanguage}/targets/${targetWord?.value}.svg`}
+                src={`img/${selectedLanguageCode}/targets/${targetWord?.value}.svg`}
               />
             </section>
           )}
