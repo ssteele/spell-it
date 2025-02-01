@@ -1,14 +1,13 @@
-
-export async function addWord(db, word) {
+export async function createWord(db, word) {
   const transaction = db.transaction('words', 'readwrite');
   const store = transaction.objectStore('words');
 
   store.add(word);
   transaction.oncomplete = () => {
-    console.log('Word added successfully!');
+    console.log('Word created!');
   };
   transaction.onerror = (event) => {
-    console.error('Error adding word:', event.target.error);
+    console.error('Error creating word:', event.target.error);
   };
 }
 

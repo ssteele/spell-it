@@ -1,5 +1,5 @@
-import { migration1 } from '@/Migrations/Migration_1.js';
-import { migration2 } from '@/Migrations/Migration_2.js';
+import { migration1 } from '@/Migrations/Migration_1';
+import { migration2 } from '@/Migrations/Migration_2';
 
 const dbTable = 'SpellingGameDB';
 const dbVersion = 1;

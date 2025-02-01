@@ -1,19 +1,24 @@
 import { useEffect, useState } from 'react'
 
-import { SupportedLanguages } from '@/Constants/Words';
-import { getUsers } from '@/Repositories/User';
+import { SupportedLanguages, SupportedLanguageMeta } from '@/Constants/Words';
+import { getUser, getUsers, updateUser } from '@/Repositories/User';
 
 export function Settings({ db }) {
   const [users, setUsers] = useState([]);
+  const [user, setUser] = useState(null);
 
-  const [selectedUser, setSelectedUser] = useState(() => {
-    const stateSelectedUser = localStorage.getItem('state-selected-user');
-    return stateSelectedUser ? stateSelectedUser : '';
+  const [selectedUserId, setSelectedUserId] = useState(() => {
+    const stateSelectedUserId = localStorage.getItem('state-selected-user-id');
+    return stateSelectedUserId ? stateSelectedUserId : '';
   });
 
-  const [selectedLanguage, setSelectedLanguage] = useState(() => {
-    const stateSelectedLanguage = localStorage.getItem('state-selected-language');
-    return (stateSelectedLanguage && SupportedLanguages.includes(stateSelectedLanguage)) ? stateSelectedLanguage : 'en';
+  const [selectedUserLevel, setSelectedUserLevel] = useState(() => {
+    return user ? user?.currentLevel : 0;
+  });
+
+  const [selectedLanguageCode, setSelectedLanguageCode] = useState(() => {
+    const stateSelectedLanguageCode = localStorage.getItem('state-selected-language-code');
+    return (stateSelectedLanguageCode && SupportedLanguages.includes(stateSelectedLanguageCode)) ? stateSelectedLanguageCode : 'en';
   });
 
   const [showHints, setShowHints] = useState(() => {
@@ -28,7 +33,7 @@ export function Settings({ db }) {
 
   const [hintCount, setHintCount] = useState(() => {
     const stateHintCount = localStorage.getItem('state-hint-count');
-    return stateHintCount ? Number(stateHintCount) : 4;
+    return stateHintCount ? stateHintCount : 4;
   });
 
   useEffect(() => {
@@ -39,14 +44,31 @@ export function Settings({ db }) {
     });
   }, [db]);
 
-  const persistSelectedUser = (user) => {
-    setSelectedUser(user);
-    localStorage.setItem('state-selected-user', user);
+  useEffect(() => {
+    const userId = Number(selectedUserId);
+    if (userId) {
+      getUser(db, userId).then((user) => {
+        setUser(user);
+        setSelectedUserLevel(user?.currentLevel);
+      }).catch((error) => {
+        console.error('Error getting user:', error);
+      });
+    }
+  }, [selectedUserId]);
+
+  const persistSelectedUserId = (userId) => {
+    setSelectedUserId(userId);
+    localStorage.setItem('state-selected-user-id', userId);
   }
 
-  const persistSelectedLanguage = (language) => {
-    setSelectedLanguage(language);
-    localStorage.setItem('state-selected-language', language);
+  const persistSelectedLanguageCode = (languageCode) => {
+    setSelectedLanguageCode(languageCode);
+    localStorage.setItem('state-selected-language-code', languageCode);
+  }
+
+  const persistSelectedUserLevel = (level) => {
+    setSelectedUserLevel(level);
+    updateUser(db, { ...user, currentLevel: level });
   }
 
   const persistShowHints = (doShowHints) => {
@@ -71,14 +93,14 @@ export function Settings({ db }) {
 
         <section className="text-4xl lg:text-2xl">
           <section className="mt-8 lg:mt-4 grid grid-cols-2 gap-12">
-            <label htmlFor="selectUser">User:</label>
+            <label htmlFor="selectUserId">User:</label>
             <select
-              name="selectUser"
-              id="selectUser"
-              value={selectedUser}
-              onChange={(e) => persistSelectedUser(e?.target?.value)}
+              name="selectUserId"
+              id="selectUserId"
+              value={selectedUserId}
+              onChange={(e) => persistSelectedUserId(e?.target?.value)}
             >
-              {!selectedUser && (
+              {!selectedUserId && (
                 <option value="0"></option>
               )}
 
@@ -92,15 +114,33 @@ export function Settings({ db }) {
           </section>
 
           <section className="mt-8 lg:mt-4 grid grid-cols-2 gap-12">
-            <label htmlFor="selectLanguage">Language:</label>
+            <label htmlFor="selectLanguageCode">Language:</label>
             <select
-              name="selectLanguage"
-              id="selectLanguage"
-              value={selectedLanguage}
-              onChange={(e) => persistSelectedLanguage(e?.target?.value)}
+              name="selectLanguageCode"
+              id="selectLanguageCode"
+              value={selectedLanguageCode}
+              onChange={(e) => persistSelectedLanguageCode(e?.target?.value)}
             >
-              <option value="en">English</option>
-              <option value="es">Spanish</option>
+              { SupportedLanguageMeta.map((language, idx) => (
+                <option
+                  key={idx}
+                  value={language?.code}
+                >{language?.name}</option>
+              ))}
+            </select>
+          </section>
+
+          <section className="mt-8 lg:mt-4 grid grid-cols-2 gap-12">
+            <label htmlFor="selectUserLevel">Level:</label>
+            <select
+              name="selectUserLevel"
+              id="selectUserLevel"
+              value={selectedUserLevel}
+              onChange={(e) => persistSelectedUserLevel(e?.target?.value)}
+            >
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
             </select>
           </section>
 

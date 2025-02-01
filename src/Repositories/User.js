@@ -1,14 +1,26 @@
-
-export async function addUser(db, user) {
+export async function createUser(db, user) {
   const transaction = db.transaction('users', 'readwrite');
   const store = transaction.objectStore('users');
 
   store.add(user);
   transaction.oncomplete = () => {
-    console.log('User added successfully!');
+    console.log('User created!');
   };
   transaction.onerror = (event) => {
-    console.error('Error adding user:', event.target.error);
+    console.error('Error creating user:', event.target.error);
+  };
+}
+
+export async function updateUser(db, user) {
+  const transaction = db.transaction('users', 'readwrite');
+  const store = transaction.objectStore('users');
+
+  store.put(user);
+  transaction.oncomplete = () => {
+    console.log('User updated!');
+  };
+  transaction.onerror = (event) => {
+    console.error('Error updating user:', event.target.error);
   };
 }
 
