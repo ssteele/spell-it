@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { LetterList } from '@/Constants/Letters';
-import { SupportedLanguageCodes } from '@/Constants/Words';
+import { SupportedLanguageCodes, SupportedLanguageMeta } from '@/Constants/Words';
 import { getUser } from '@/Repositories/User';
 import { getWordsByLevelAndLanguage } from '@/Repositories/Word';
 
@@ -138,13 +138,7 @@ export function SpellIt({ db }) {
   }
 
   const spellItText = () => {
-    switch (selectedLanguage) {
-      case 'en':
-        return 'Spell it';
-
-      case 'es':
-        return 'Deletrealo';
-    }
+    return SupportedLanguageMeta.find((language) => selectedLanguageCode === language?.code)?.spellItText || 'Spell it';
   };
 
   return (
