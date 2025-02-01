@@ -44,19 +44,20 @@ export function SpellIt({ db }) {
         setUser(u);
       }).catch((error) => {
         console.error('Error getting user:', error);
-        setUser({});
       });
     }
   }, [db]);
 
   useEffect(() => {
-    const currentLevel = user?.currentLevel || 0;
-    getWordsByLevelAndLanguage(db, currentLevel, selectedLanguageCode).then((words) => {
-      setWords(words);
-      renderTargetWord(words);
-    }).catch((error) => {
-      console.error('Error getting words:', error);
-    });
+    if (!!user?.id) {
+      const currentLevel = Number(user?.currentLevel) || 0;
+      getWordsByLevelAndLanguage(db, currentLevel, selectedLanguageCode).then((words) => {
+        setWords(words);
+        renderTargetWord(words);
+      }).catch((error) => {
+        console.error('Error getting words:', error);
+      });
+    }
   }, [user]);
 
   useEffect(() => {
@@ -74,11 +75,13 @@ export function SpellIt({ db }) {
   }
 
   const renderTargetWord = (words) => {
-    const targetWord = words[Math.floor(Math.random() * words?.length)];
-    setTargetWord(targetWord);
-    setTargetLetters([...targetWord?.value]);
-    setInput('');
-    focusInput();
+    if (words?.length) {
+      const targetWord = words[Math.floor(Math.random() * words?.length)];
+      setTargetWord(targetWord);
+      setTargetLetters([...targetWord?.value]);
+      setInput('');
+      focusInput();
+    }
   };
 
   const updateHintLetters = (input) => {
