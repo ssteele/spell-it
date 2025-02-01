@@ -1,6 +1,6 @@
-import { addUser } from '@/Repositories/User.js';
-import { addWord } from '@/Repositories/Word.js';
-import { getDateOffset } from '@/Utils/Date.js';
+import { createUser } from '@/Repositories/User';
+import { createWord } from '@/Repositories/Word';
+import { getDateOffset } from '@/Utils/Date';
 
 export function migration1(db) {
   const words = [
@@ -91,11 +91,11 @@ export function migration1(db) {
     },
   ];
   words.map(({ level, en, es }) => {
-    en.map(w => addWord(db, { language: 'en', level, value: w }));
-    es.map(w => addWord(db, { language: 'es', level, value: w }));
+    en.map(w => createWord(db, { language: 'en', level, value: w }));
+    es.map(w => createWord(db, { language: 'es', level, value: w }));
   });
 
   const users = [
   ];
-  users.map(u => addUser(db, u));
+  users.map(u => createUser(db, u));
 }
