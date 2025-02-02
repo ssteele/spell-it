@@ -42,6 +42,11 @@ export function Settings({ db }) {
     return stateHintCount ? stateHintCount : 4;
   });
 
+  const [doVoiceWords, setDoVoiceWords] = useState(() => {
+    const stateDoVoiceWords = localStorage.getItem('state-do-voice-words');
+    return stateDoVoiceWords ? 'false' !== stateDoVoiceWords : true;
+  });
+
   useEffect(() => {
     getUsers(db).then((users) => {
       setUsers(users);
@@ -96,6 +101,11 @@ export function Settings({ db }) {
   const persistHintCount = (count) => {
     setHintCount(count);
     localStorage.setItem('state-hint-count', count);
+  }
+
+  const persistDoVoiceWords = (doVoiceWords) => {
+    setDoVoiceWords(doVoiceWords);
+    localStorage.setItem('state-do-voice-words', doVoiceWords);
   }
 
   return (
@@ -160,7 +170,7 @@ export function Settings({ db }) {
           </section>
 
           <section className="mt-8 lg:mt-4 grid grid-cols-2 gap-12">
-            <label htmlFor="selectLanguageCode">Repeat Threshold:</label>
+            <label htmlFor="selectLanguageCode">Repeat threshold:</label>
               <input
                 placeholder="10"
                 type="text"
@@ -204,6 +214,18 @@ export function Settings({ db }) {
                 />
               </section>
             )}
+          </section>
+
+          <section className="mt-8 lg:mt-4">
+            <input
+              checked={doVoiceWords}
+              className="h-6 w-6"
+              id="doVoiceWords"
+              name="doVoiceWords"
+              type="checkbox"
+              onChange={(e) => persistDoVoiceWords(e?.target?.checked)}
+            />
+            <label htmlFor="doVoiceWords"> Voice words</label>
           </section>
         </section>
       </section>
