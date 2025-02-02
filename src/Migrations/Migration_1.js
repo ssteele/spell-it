@@ -96,6 +96,16 @@ export function migration1(db) {
   });
 
   const users = [
+    {
+      name: 'Ada',
+      dob: getDateOffset(new Date('2020-06-08')),
+      currentLevel: 0,
+    },
+    {
+      name: 'Harvi',
+      dob: getDateOffset(new Date('2016-11-16')),
+      currentLevel: 2,
+    },
   ];
   users.map(u => createUser(db, u));
 }
