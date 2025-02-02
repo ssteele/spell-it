@@ -5,13 +5,6 @@ import { SupportedLanguageCodes, SupportedLanguageMeta } from '@/Constants/Words
 import { getUser } from '@/Repositories/User';
 import { getWordsByLevelAndLanguage } from '@/Repositories/Word';
 
-// load voices
-const synth = window?.speechSynthesis;
-let voices = [];
-synth.onvoiceschanged = () => {
-  voices = synth.getVoices();
-};
-
 const stateSelectedUserId = localStorage.getItem('state-selected-user-id');
 const selectedUserId = stateSelectedUserId ? stateSelectedUserId : null;
 
@@ -34,6 +27,7 @@ const hintCount = stateHintCount ? Number(stateHintCount) : 4;
 
 const stateDoVoiceWords = localStorage.getItem('state-do-voice-words');
 const doVoiceWords = stateDoVoiceWords ? 'false' !== stateDoVoiceWords : true;
+const voiceSynth = doVoiceWords ? window?.speechSynthesis : null;
 
 const alphabetLetters = LetterList[selectedLanguageCode];
 const vowels = alphabetLetters.filter((letter) => 'aeiou'.includes(letter));
@@ -110,24 +104,12 @@ export function SpellIt({ db }) {
   };
 
   const speakTargetWord = (word) => {
-    if (!doVoiceWords || !synth) return;
-
-    let voice;
-    if (voices?.length) {
-      console.log('Voices loaded'); // @debug
-      voice = voices.find(v => 'es-US' === v?.lang);
-    }
+    if (!voiceSynth) return;
 
     const utterance = new SpeechSynthesisUtterance(word); 
-    if (!!voice) {
-      utterance.voice = voice;
-    } else {
-      utterance.lang = 'es-US';
-      // utterance.rate = 0.5;
-      // utterance.pitch = 1.5;
-    }
+    utterance.lang = 'es-US';
 
-    synth.speak(utterance);
+    voiceSynth.speak(utterance);
   };
 
   const renderTargetWord = (words) => {
