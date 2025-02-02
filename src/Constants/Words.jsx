@@ -5,11 +5,13 @@ export const SupportedLanguageMeta = [
   {
     code: 'en',
     name: 'English',
-    spellItText: 'Spell it',
+    synth: 'en-US',
+    text: 'Spell it',
   },
   {
     code: 'es',
     name: 'Spanish',
-    spellItText: 'Deletrealo',
+    synth: 'es-US',
+    text: 'Deletrealo',
   },
 ];

@@ -107,8 +107,7 @@ export function SpellIt({ db }) {
     if (!voiceSynth) return;
 
     const utterance = new SpeechSynthesisUtterance(word); 
-    utterance.lang = 'es-US';
-
+    utterance.lang = synthLanguage();
     voiceSynth.speak(utterance);
   };
 
@@ -184,8 +183,12 @@ export function SpellIt({ db }) {
     }
   }
 
+  const synthLanguage = () => {
+    return SupportedLanguageMeta.find((language) => selectedLanguageCode === language?.code)?.synth || 'en-US';
+  };
+
   const spellItText = () => {
-    return SupportedLanguageMeta.find((language) => selectedLanguageCode === language?.code)?.spellItText || 'Spell it';
+    return SupportedLanguageMeta.find((language) => selectedLanguageCode === language?.code)?.text || 'Spell it';
   };
 
   return (
