@@ -29,6 +29,8 @@ const alphabetLetters = LetterList[selectedLanguageCode];
 const vowels = alphabetLetters.filter((letter) => 'aeiou'.includes(letter));
 const consonants = alphabetLetters.filter((letter) => !'aeiou'.includes(letter));
 
+const voice = speechSynthesis.getVoices().find(v => 'es-US' === v?.lang);
+
 export function SpellIt({ db }) {
   const [user, setUser] = useState({});
   const [input, setInput] = useState('');
@@ -99,6 +101,15 @@ export function SpellIt({ db }) {
     }
   };
 
+  const speakTargetWord = (word) => {
+    const utterance = new SpeechSynthesisUtterance(word); 
+    // utterance.lang = 'es-MX';
+    // utterance.rate = 0.5;
+    // utterance.pitch = 1.5;
+    utterance.voice = voice;
+    window.speechSynthesis.speak(utterance);
+  };
+
   const renderTargetWord = (words) => {
     if (words?.length) {
       const targetWord = getRandomTargetWord(words);
@@ -106,6 +117,7 @@ export function SpellIt({ db }) {
       setTargetLetters([...targetWord?.value]);
       setInput('');
       focusInput();
+      speakTargetWord(targetWord?.value);
     }
   };
 
