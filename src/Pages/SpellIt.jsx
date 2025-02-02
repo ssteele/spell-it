@@ -78,8 +78,10 @@ export function SpellIt({ db }) {
   }, [input]);
 
   const focusInput = () => {
-    const inputEl = document.getElementById('input'); 
-    inputEl.focus();
+    if (!doShowHints) {
+      const inputEl = document.getElementById('input'); 
+      inputEl.focus();
+    }
   }
 
   const getRandomTargetWord = (words) => {
