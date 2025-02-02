@@ -231,6 +231,7 @@ export function SpellIt({ db }) {
               <img
                 className="h-36 w-36 sm:h-72 sm:w-72"
                 src={`img/${selectedLanguageCode}/targets/${targetWord?.value}.svg`}
+                onClick={() => speakTargetWord(targetWord?.value)}
               />
             </section>
           )}
