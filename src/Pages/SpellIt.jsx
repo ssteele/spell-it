@@ -110,6 +110,7 @@ export function SpellIt({ db }) {
 
     const utterance = new SpeechSynthesisUtterance(word); 
     utterance.lang = synthLanguage();
+    utterance.rate = 0.75;
     voiceSynth.speak(utterance);
   };
 
