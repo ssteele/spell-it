@@ -27,8 +27,11 @@ const hintCount = stateHintCount ? Number(stateHintCount) : 4;
 
 const stateDoVoiceWords = localStorage.getItem('state-do-voice-words');
 const doVoiceWords = stateDoVoiceWords ? 'false' !== stateDoVoiceWords : true;
-const voiceSynth = doVoiceWords ? window?.speechSynthesis : null;
 
+const stateDoVoiceInput = localStorage.getItem('state-do-voice-input');
+const doVoiceInput = stateDoVoiceInput ? 'false' !== stateDoVoiceInput : true;
+
+const voiceSynth = window?.speechSynthesis;
 const utteranceRate = 0.75;
 
 const alphabetLetters = LetterList[selectedLanguageCode];
@@ -115,7 +118,7 @@ export function SpellIt({ db }) {
   };
 
   const speakTargetWord = (word) => {
-    if (!voiceSynth) return;
+    if (!doVoiceWords) return;
 
     const utterance = new SpeechSynthesisUtterance(word); 
     utterance.lang = synthLanguage();
@@ -124,7 +127,7 @@ export function SpellIt({ db }) {
   };
 
   const speakInput = (input) => {
-    if (!voiceSynth) return;
+    if (!doVoiceInput) return;
 
     const utterance = new SpeechSynthesisUtterance(input); 
     utterance.lang = synthLanguage();

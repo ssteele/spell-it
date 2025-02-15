@@ -47,6 +47,11 @@ export function Settings({ db }) {
     return stateDoVoiceWords ? 'false' !== stateDoVoiceWords : true;
   });
 
+  const [doVoiceInput, setDoVoiceInput] = useState(() => {
+    const stateDoVoiceInput = localStorage.getItem('state-do-voice-input');
+    return stateDoVoiceInput ? 'false' !== stateDoVoiceInput : true;
+  });
+
   useEffect(() => {
     getUsers(db).then((users) => {
       setUsers(users);
@@ -106,6 +111,11 @@ export function Settings({ db }) {
   const persistDoVoiceWords = (doVoiceWords) => {
     setDoVoiceWords(doVoiceWords);
     localStorage.setItem('state-do-voice-words', doVoiceWords);
+  }
+
+  const persistDoVoiceInput = (doVoiceInput) => {
+    setDoVoiceInput(doVoiceInput);
+    localStorage.setItem('state-do-voice-input', doVoiceInput);
   }
 
   return (
@@ -226,6 +236,18 @@ export function Settings({ db }) {
               onChange={(e) => persistDoVoiceWords(e?.target?.checked)}
             />
             <label htmlFor="doVoiceWords"> Voice words</label>
+          </section>
+
+          <section className="mt-8 lg:mt-4">
+            <input
+              checked={doVoiceInput}
+              className="h-6 w-6"
+              id="doVoiceInput"
+              name="doVoiceInput"
+              type="checkbox"
+              onChange={(e) => persistDoVoiceInput(e?.target?.checked)}
+            />
+            <label htmlFor="doVoiceInput"> Voice input</label>
           </section>
         </section>
       </section>
