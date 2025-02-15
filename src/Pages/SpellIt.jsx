@@ -29,6 +29,8 @@ const stateDoVoiceWords = localStorage.getItem('state-do-voice-words');
 const doVoiceWords = stateDoVoiceWords ? 'false' !== stateDoVoiceWords : true;
 const voiceSynth = doVoiceWords ? window?.speechSynthesis : null;
 
+const utteranceRate = 0.75;
+
 const alphabetLetters = LetterList[selectedLanguageCode];
 const vowels = alphabetLetters.filter((letter) => 'aeiou'.includes(letter));
 const consonants = alphabetLetters.filter((letter) => !'aeiou'.includes(letter));
@@ -84,6 +86,13 @@ export function SpellIt({ db }) {
     }
   }
 
+  const updateInput = (input) => {
+    setInput(input);
+    if (!!input) {
+      speakInput(input);
+    }
+  }
+
   const getRandomTargetWord = (words) => {
     if (words?.length) {
       const targetWord = words[Math.floor(Math.random() * words?.length)];
@@ -110,7 +119,16 @@ export function SpellIt({ db }) {
 
     const utterance = new SpeechSynthesisUtterance(word); 
     utterance.lang = synthLanguage();
-    utterance.rate = 0.75;
+    utterance.rate = utteranceRate;
+    voiceSynth.speak(utterance);
+  };
+
+  const speakInput = (input) => {
+    if (!voiceSynth) return;
+
+    const utterance = new SpeechSynthesisUtterance(input); 
+    utterance.lang = synthLanguage();
+    utterance.rate = utteranceRate;
     voiceSynth.speak(utterance);
   };
 
@@ -119,7 +137,7 @@ export function SpellIt({ db }) {
       const targetWord = getRandomTargetWord(words);
       setTargetWord(targetWord);
       setTargetLetters([...targetWord?.value]);
-      setInput('');
+      updateInput('');
       focusInput();
       speakTargetWord(targetWord?.value);
     }
@@ -168,7 +186,7 @@ export function SpellIt({ db }) {
   const clickHint = (letter) => {
     if ('_back' === letter) {
       const backspacedInput = input.substring(0, input.length - 1);
-      setInput(backspacedInput);
+      updateInput(backspacedInput);
       return;
     }
 
@@ -177,7 +195,7 @@ export function SpellIt({ db }) {
       return;
     }
 
-    setInput(input + letter);
+    updateInput(input + letter);
   };
 
   const listenToKey = (key) => {
@@ -204,7 +222,7 @@ export function SpellIt({ db }) {
         type="text"
         value={input}
         onKeyUp={(e) => listenToKey(e?.key)}
-        onChange={(e) => setInput(e?.target?.value)}
+        onChange={(e) => updateInput(e?.target?.value)}
       />
 
       <section className="flex h-screen">
