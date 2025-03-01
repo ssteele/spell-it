@@ -1,4 +1,5 @@
 import SpellIt from '@/Pages/SpellIt';
+import Report from '@/Pages/Report';
 import Settings from '@/Pages/Settings';
 import { getDatabase } from '@/Utils/Database.js';
 import '@/App.css'
@@ -16,7 +17,14 @@ function App() {
           db={db}
         />
       );
-  
+
+    case 'report':
+      return (
+        <Report
+          db={db}
+        />
+      );
+
     default:
       return (
         <SpellIt

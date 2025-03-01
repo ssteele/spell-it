@@ -64,3 +64,19 @@ export async function updateProgress(
     };
   };
 }
+
+export function getUserProgress(db, userId) {
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction('progress', 'readonly');
+    const store = transaction.objectStore('progress');
+    const index = store.index('userIdIndex');
+
+    const request = index.getAll(userId);
+    request.onsuccess = () => {
+      resolve(request.result);
+    };
+    request.onerror = (event) => {
+      reject(event.target.error);
+    };
+  });
+}
