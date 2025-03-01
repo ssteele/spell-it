@@ -163,7 +163,13 @@ export function SpellIt({ db }) {
     const isCorrect = input === targetWord?.value.slice(0, input.length);
     const isComplete = input === targetWord?.value;
 
+    // console.log('SHS targetWord:', targetWord); // @debug
+    // console.log('SHS input:', input); // @debug
+    // console.log('SHS isCorrect:', isCorrect); // @debug
+    // console.log('SHS isComplete:', isComplete); // @debug
+
     updateProgress(db, Number(selectedUserId), targetWord?.id, input, isCorrect, isComplete).then((u) => {
+      console.log('SHS u:', u); // @debug
     }).catch((error) => {
       console.error('Error updating progress:', error);
     });

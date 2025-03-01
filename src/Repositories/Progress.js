@@ -21,6 +21,15 @@ export async function updateProgress(
 
     const filteredEntries = request.result.filter(entry => {
       const millisecondsElapsed = timestamp - entry?.timestamp;
+      console.group('SHS entry'); // @debug
+      console.log('SHS wordId:', wordId); // @debug
+      console.log('SHS entry.id:', entry.id); // @debug
+      console.log('SHS entry.isComplete:', entry.isComplete); // @debug
+      console.log('SHS input:', input); // @debug
+      console.log('SHS entry.input:', entry.input); // @debug
+      console.log('SHS timestamp:', timestamp); // @debug
+      console.log('SHS millisecondsElapsed:', millisecondsElapsed); // @debug
+      console.groupEnd(); // @debug
       if (                                                          // only return entries that are:
         !entry.isComplete                                           // ...not complete
         && millisecondsElapsed < MILLISECONDS_TO_ANSWER             // ...still within time limit
