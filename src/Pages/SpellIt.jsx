@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { LetterList } from '@/Constants/Letters';
-import { SupportedLanguageCodes, SupportedLanguageMeta } from '@/Constants/Words';
+import { LETTER_LIST } from '@/Constants/Letters';
+import { SUPPORTED_LANGUAGE_CODES, SUPPORTED_LANGUAGE_META } from '@/Constants/Words';
 import { getUser } from '@/Repositories/User';
 import { getWordsByLevelAndLanguage } from '@/Repositories/Word';
 
@@ -9,7 +9,7 @@ const stateSelectedUserId = localStorage.getItem('state-selected-user-id');
 const selectedUserId = stateSelectedUserId ? stateSelectedUserId : null;
 
 const stateSelectedLanguageCode = localStorage.getItem('state-selected-language-code');
-const selectedLanguageCode = (stateSelectedLanguageCode && SupportedLanguageCodes.includes(stateSelectedLanguageCode))
+const selectedLanguageCode = (stateSelectedLanguageCode && SUPPORTED_LANGUAGE_CODES.includes(stateSelectedLanguageCode))
   ? stateSelectedLanguageCode
   : 'en';
 
@@ -34,7 +34,7 @@ const doVoiceInput = stateDoVoiceInput ? 'false' !== stateDoVoiceInput : true;
 const voiceSynth = window?.speechSynthesis;
 const utteranceRate = 0.75;
 
-const alphabetLetters = LetterList[selectedLanguageCode];
+const alphabetLetters = LETTER_LIST[selectedLanguageCode];
 const vowels = alphabetLetters.filter((letter) => 'aeiou'.includes(letter));
 const consonants = alphabetLetters.filter((letter) => !'aeiou'.includes(letter));
 
@@ -208,11 +208,11 @@ export function SpellIt({ db }) {
   }
 
   const synthLanguage = () => {
-    return SupportedLanguageMeta.find((language) => selectedLanguageCode === language?.code)?.synth || 'en-US';
+    return SUPPORTED_LANGUAGE_META.find((language) => selectedLanguageCode === language?.code)?.synth || 'en-US';
   };
 
   const spellItText = () => {
-    return SupportedLanguageMeta.find((language) => selectedLanguageCode === language?.code)?.text || 'Spell it';
+    return SUPPORTED_LANGUAGE_META.find((language) => selectedLanguageCode === language?.code)?.text || 'Spell it';
   };
 
   return (

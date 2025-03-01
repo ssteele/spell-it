@@ -1,7 +1,7 @@
-export const SupportedLanguageCodes = ['en', 'es'];
-export const SupportedLanguageLevels = [0, 1, 2, 3, 4, 5];
+export const SUPPORTED_LANGUAGE_CODES = ['en', 'es'];
+export const SUPPORTED_LANGUAGE_LEVELS = [0, 1, 2, 3, 4, 5];
 
-export const SupportedLanguageMeta = [
+export const SUPPORTED_LANGUAGE_META = [
   {
     code: 'en',
     name: 'English',

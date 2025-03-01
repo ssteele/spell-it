@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { SupportedLanguageCodes, SupportedLanguageMeta } from '@/Constants/Words';
+import { SUPPORTED_LANGUAGE_CODES, SUPPORTED_LANGUAGE_LEVELS, SUPPORTED_LANGUAGE_META } from '@/Constants/Words';
 import { getUser, getUsers, updateUser } from '@/Repositories/User';
-import { SupportedLanguageLevels } from '../Constants/Words';
 
 export function Settings({ db }) {
   const [users, setUsers] = useState([]);
@@ -19,7 +18,7 @@ export function Settings({ db }) {
 
   const [selectedLanguageCode, setSelectedLanguageCode] = useState(() => {
     const stateSelectedLanguageCode = localStorage.getItem('state-selected-language-code');
-    return (stateSelectedLanguageCode && SupportedLanguageCodes.includes(stateSelectedLanguageCode)) ? stateSelectedLanguageCode : 'en';
+    return (stateSelectedLanguageCode && SUPPORTED_LANGUAGE_CODES.includes(stateSelectedLanguageCode)) ? stateSelectedLanguageCode : 'en';
   });
 
   const [repeatThreshold, setRepeatThreshold] = useState(() => {
@@ -153,7 +152,7 @@ export function Settings({ db }) {
               value={selectedUserLevel}
               onChange={(e) => persistSelectedUserLevel(e?.target?.value)}
             >
-              { SupportedLanguageLevels.map((level, idx) => (
+              { SUPPORTED_LANGUAGE_LEVELS.map((level, idx) => (
                 <option
                   key={idx}
                   value={level}
@@ -170,7 +169,7 @@ export function Settings({ db }) {
               value={selectedLanguageCode}
               onChange={(e) => persistSelectedLanguageCode(e?.target?.value)}
             >
-              { SupportedLanguageMeta.map((language, idx) => (
+              { SUPPORTED_LANGUAGE_META.map((language, idx) => (
                 <option
                   key={idx}
                   value={language?.code}
