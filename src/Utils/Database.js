@@ -39,6 +39,7 @@ function getDatabase() {
         const progressStore = db.createObjectStore('progress', { keyPath: 'id', autoIncrement: true, });
         progressStore.createIndex('userIdIndex', 'userId', { unique: false });
         progressStore.createIndex('wordIdIndex', 'wordId', { unique: false });
+        progressStore.createIndex('userAndWordIndex', ['userId', 'wordId'], { unique: false });
       }
     };
 

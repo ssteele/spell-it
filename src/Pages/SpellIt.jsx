@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { LETTER_LIST } from '@/Constants/Letters';
 import { SUPPORTED_LANGUAGE_CODES, SUPPORTED_LANGUAGE_META } from '@/Constants/Words';
 import { getUser } from '@/Repositories/User';
+import { updateProgress } from '@/Repositories/Progress';
 import { getWordsByLevelAndLanguage } from '@/Repositories/Word';
 
 const stateSelectedUserId = localStorage.getItem('state-selected-user-id');
@@ -78,6 +79,7 @@ export function SpellIt({ db }) {
   }, [targetWord]);
 
   useEffect(() => {
+    updateUserProgress(input);
     updateHintLetters(input);
     focusInput();
   }, [input]);
@@ -149,6 +151,22 @@ export function SpellIt({ db }) {
   const nextWord = (previousWord, words) => {
     savePreviousWord(previousWord);
     renderTargetWord(words);
+  };
+
+  const updateUserProgress = (input) => {
+  // @todo: check if progress tracking is enabled
+
+    if (!targetWord?.value || !input) {
+      return;
+    }
+
+    const isCorrect = input === targetWord?.value.slice(0, input.length);
+    const isComplete = input === targetWord?.value;
+
+    updateProgress(db, Number(selectedUserId), targetWord?.id, input, isCorrect, isComplete).then((u) => {
+    }).catch((error) => {
+      console.error('Error updating progress:', error);
+    });
   };
 
   const updateHintLetters = (input) => {
