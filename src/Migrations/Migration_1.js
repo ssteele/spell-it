@@ -106,6 +106,11 @@ export function migration1(db) {
       dob: getDateOffset(new Date('2016-11-16')),
       currentLevel: 2,
     },
+    {
+      name: 'Test',
+      dob: getDateOffset(new Date('2001-01-01')),
+      currentLevel: 5,
+    },
   ];
   users.map(u => createUser(db, u));
 }
