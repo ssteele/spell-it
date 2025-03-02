@@ -7,7 +7,7 @@ import { updateProgress } from '@/Repositories/Progress';
 import { getWordsByLevelAndLanguage } from '@/Repositories/Word';
 
 const stateSelectedUserId = localStorage.getItem('state-selected-user-id');
-const selectedUserId = stateSelectedUserId ? stateSelectedUserId : null;
+const selectedUserId = stateSelectedUserId ? stateSelectedUserId : 1;
 
 const stateSelectedLanguageCode = localStorage.getItem('state-selected-language-code');
 const selectedLanguageCode = (stateSelectedLanguageCode && SUPPORTED_LANGUAGE_CODES.includes(stateSelectedLanguageCode))
