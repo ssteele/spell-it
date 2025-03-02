@@ -129,147 +129,145 @@ export function Settings({ db }) {
 
   return (
     <>
-      <section className="w-1/2 mt-16 mx-auto">
-        <h1 className="mb-20 text-6xl lg:mb-12 lg:text-4xl">Settings</h1>
+      <section className="w-9/12 my-8 mx-auto lg:w-1/2">
+        <h1 className="mb-8 text-2xl lg:mb-12 lg:text-4xl">Settings</h1>
 
-        <section className="text-4xl lg:text-2xl">
-          <section className="mt-8 lg:mt-4 grid grid-cols-2 gap-12">
-            <label htmlFor="selectUserId">User:</label>
-            <select
-              name="selectUserId"
-              id="selectUserId"
-              value={selectedUserId}
-              onChange={(e) => persistSelectedUserId(e?.target?.value)}
-            >
-              {!selectedUserId && (
-                <option value="0"></option>
-              )}
-
-              {users.length && users.map((u, idx) => (
-                <option
-                  key={idx}
-                  value={u?.id}
-                >{u?.name}</option>
-              ))}
-            </select>
-          </section>
-
-          <section className="mt-8 lg:mt-4 grid grid-cols-2 gap-12">
-            <label htmlFor="selectUserLevel">Level:</label>
-            <select
-              name="selectUserLevel"
-              id="selectUserLevel"
-              value={selectedUserLevel}
-              onChange={(e) => persistSelectedUserLevel(e?.target?.value)}
-            >
-              { SUPPORTED_LANGUAGE_LEVELS.map((level, idx) => (
-                <option
-                  key={idx}
-                  value={level}
-                >{level}</option>
-              ))}
-            </select>
-          </section>
-
-          <section className="mt-8 lg:mt-4 grid grid-cols-2 gap-12">
-            <label htmlFor="selectLanguageCode">Language:</label>
-            <select
-              name="selectLanguageCode"
-              id="selectLanguageCode"
-              value={selectedLanguageCode}
-              onChange={(e) => persistSelectedLanguageCode(e?.target?.value)}
-            >
-              { SUPPORTED_LANGUAGE_META.map((language, idx) => (
-                <option
-                  key={idx}
-                  value={language?.code}
-                >{language?.name}</option>
-              ))}
-            </select>
-          </section>
-
-          <section className="mt-8 lg:mt-4 grid grid-cols-2 gap-12">
-            <label htmlFor="selectLanguageCode">Repeat threshold:</label>
-              <input
-                placeholder="10"
-                type="text"
-                value={repeatThreshold}
-                onChange={(e) => persistRepeatThreshold(e?.target?.value)}
-              />
-          </section>
-
-          <section className="mt-8 px-4 py-6 grid grid-cols-1 gap-x-12 border-2 border-gray-300 rounded-lg lg:mt-4">
-            <section>
-              <input
-                checked={doShowHints}
-                className="h-6 w-6"
-                id="doShowHints"
-                name="doShowHints"
-                type="checkbox"
-                onChange={(e) => persistDoShowHints(e?.target?.checked)}
-              />
-              <label htmlFor="doShowHints"> Hints:</label>
-            </section>
-
-            {doShowHints && (
-              <section className="mt-4 mx-8 grid grid-cols-1 gap-y-2 lg:grid-cols-2 lg:gap-x-12">
-                <section>
-                  <input
-                    checked={doHintsMatchMouth}
-                    className="h-6 w-6"
-                    id="doHintsMatchMouth"
-                    name="doHintsMatchMouth"
-                    type="checkbox"
-                    onChange={(e) => persistDoHintsMatchMouth(e?.target?.checked)}
-                  />
-                  <label htmlFor="doHintsMatchMouth"> Match mouth</label>
-                </section>
-
-                <input
-                  placeholder="Hint count"
-                  type="text"
-                  value={hintCount}
-                  onChange={(e) => persistHintCount(e?.target?.value)}
-                />
-              </section>
+        <section className="mt-4 grid grid-cols-2 gap-12 text-lg lg:text-xl">
+          <label htmlFor="selectUserId">User:</label>
+          <select
+            name="selectUserId"
+            id="selectUserId"
+            value={selectedUserId}
+            onChange={(e) => persistSelectedUserId(e?.target?.value)}
+          >
+            {!selectedUserId && (
+              <option value="0"></option>
             )}
+
+            {users.length && users.map((u, idx) => (
+              <option
+                key={idx}
+                value={u?.id}
+              >{u?.name}</option>
+            ))}
+          </select>
+        </section>
+
+        <section className="mt-4 grid grid-cols-2 gap-12 text-lg lg:text-xl">
+          <label htmlFor="selectUserLevel">Level:</label>
+          <select
+            name="selectUserLevel"
+            id="selectUserLevel"
+            value={selectedUserLevel}
+            onChange={(e) => persistSelectedUserLevel(e?.target?.value)}
+          >
+            { SUPPORTED_LANGUAGE_LEVELS.map((level, idx) => (
+              <option
+                key={idx}
+                value={level}
+              >{level}</option>
+            ))}
+          </select>
+        </section>
+
+        <section className="mt-4 grid grid-cols-2 gap-12 text-lg lg:text-xl">
+          <label htmlFor="selectLanguageCode">Language:</label>
+          <select
+            name="selectLanguageCode"
+            id="selectLanguageCode"
+            value={selectedLanguageCode}
+            onChange={(e) => persistSelectedLanguageCode(e?.target?.value)}
+          >
+            { SUPPORTED_LANGUAGE_META.map((language, idx) => (
+              <option
+                key={idx}
+                value={language?.code}
+              >{language?.name}</option>
+            ))}
+          </select>
+        </section>
+
+        <section className="mt-4 grid grid-cols-2 gap-12 text-lg lg:text-xl">
+          <label htmlFor="selectLanguageCode">Repeat threshold:</label>
+          <input
+            placeholder="10"
+            type="text"
+            value={repeatThreshold}
+            onChange={(e) => persistRepeatThreshold(e?.target?.value)}
+          />
+        </section>
+
+        <section className="mt-4 px-4 py-6 grid grid-cols-1 gap-x-12 border-2 border-gray-300 rounded-lg text-lg lg:text-xl">
+          <section>
+            <input
+              checked={doShowHints}
+              className="h-3 w-3 lg:h-5 lg:w-5"
+              id="doShowHints"
+              name="doShowHints"
+              type="checkbox"
+              onChange={(e) => persistDoShowHints(e?.target?.checked)}
+            />
+            <label htmlFor="doShowHints"> Hints:</label>
           </section>
 
-          <section className="mt-8 lg:mt-4">
-            <input
-              checked={doVoiceWords}
-              className="h-6 w-6"
-              id="doVoiceWords"
-              name="doVoiceWords"
-              type="checkbox"
-              onChange={(e) => persistDoVoiceWords(e?.target?.checked)}
-            />
-            <label htmlFor="doVoiceWords"> Voice words</label>
-          </section>
+          {doShowHints && (
+            <section className="mt-2 mx-8 grid grid-cols-1 gap-y-2 lg:grid-cols-2 lg:gap-x-12">
+              <section>
+                <input
+                  checked={doHintsMatchMouth}
+                  className="h-3 w-3 lg:h-5 lg:w-5"
+                  id="doHintsMatchMouth"
+                  name="doHintsMatchMouth"
+                  type="checkbox"
+                  onChange={(e) => persistDoHintsMatchMouth(e?.target?.checked)}
+                />
+                <label htmlFor="doHintsMatchMouth"> Match mouth</label>
+              </section>
 
-          <section className="mt-8 lg:mt-4">
-            <input
-              checked={doVoiceInput}
-              className="h-6 w-6"
-              id="doVoiceInput"
-              name="doVoiceInput"
-              type="checkbox"
-              onChange={(e) => persistDoVoiceInput(e?.target?.checked)}
-            />
-            <label htmlFor="doVoiceInput"> Voice input</label>
-          </section>
+              <input
+                placeholder="Hint count"
+                type="text"
+                value={hintCount}
+                onChange={(e) => persistHintCount(e?.target?.value)}
+              />
+            </section>
+          )}
+        </section>
 
-          <section className="mt-8 lg:mt-4">
-            <input
-              checked={doTrackProgress}
-              className="h-6 w-6"
-              id="doTrackProgress"
-              name="doTrackProgress"
-              type="checkbox"
-              onChange={(e) => persistDoTrackProgress(e?.target?.checked)}
-            />
-            <label htmlFor="doTrackProgress"> Track progress</label>
-          </section>
+        <section className="mt-4 text-lg lg:text-xl">
+          <input
+            checked={doVoiceWords}
+            className="h-3 w-3 lg:h-5 lg:w-5"
+            id="doVoiceWords"
+            name="doVoiceWords"
+            type="checkbox"
+            onChange={(e) => persistDoVoiceWords(e?.target?.checked)}
+          />
+          <label htmlFor="doVoiceWords"> Voice words</label>
+        </section>
+
+        <section className="mt-4 text-lg lg:text-xl">
+          <input
+            checked={doVoiceInput}
+            className="h-3 w-3 lg:h-5 lg:w-5"
+            id="doVoiceInput"
+            name="doVoiceInput"
+            type="checkbox"
+            onChange={(e) => persistDoVoiceInput(e?.target?.checked)}
+          />
+          <label htmlFor="doVoiceInput"> Voice input</label>
+        </section>
+
+        <section className="mt-4 text-lg lg:text-xl">
+          <input
+            checked={doTrackProgress}
+            className="h-3 w-3 lg:h-5 lg:w-5"
+            id="doTrackProgress"
+            name="doTrackProgress"
+            type="checkbox"
+            onChange={(e) => persistDoTrackProgress(e?.target?.checked)}
+          />
+          <label htmlFor="doTrackProgress"> Track progress</label>
         </section>
       </section>
     </>

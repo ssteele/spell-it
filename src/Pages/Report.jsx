@@ -92,45 +92,41 @@ export function Report({ db }) {
 
   return (
     <>
-      <section className="w-1/2 mt-16 mx-auto">
-        <h1 className="mb-20 text-6xl lg:mb-12 lg:text-4xl">Report</h1>
+      <section className="w-9/12 my-8 mx-auto text-lg lg:w-1/2 lg:text-2xl">
+        <h1 className="mb-8 text-2xl lg:mb-12 lg:text-4xl">Report</h1>
 
-        <section className="text-4xl lg:text-2xl">
-          <section className="mt-8 lg:mt-4 grid grid-cols-2 gap-12">
-            <label htmlFor="selectUserId">User:</label>
-            <select
-              name="selectUserId"
-              id="selectUserId"
-              value={selectedUserId}
-              onChange={(e) => persistSelectedUserId(e?.target?.value)}
-            >
-              {!selectedUserId && (
-                <option value="0"></option>
-              )}
+        <section className="mt-4 grid grid-cols-2 gap-12 text-lg">
+          <label htmlFor="selectUserId">User:</label>
+          <select
+            name="selectUserId"
+            id="selectUserId"
+            value={selectedUserId}
+            onChange={(e) => persistSelectedUserId(e?.target?.value)}
+          >
+            {!selectedUserId && (
+              <option value="0"></option>
+            )}
 
-              {users.length && users.map((u, idx) => (
-                <option
-                  key={idx}
-                  value={u?.id}
-                >{u?.name}</option>
-              ))}
-            </select>
-          </section>
+            {users.length && users.map((u, idx) => (
+              <option
+                key={idx}
+                value={u?.id}
+              >{u?.name}</option>
+            ))}
+          </select>
         </section>
 
-        <section className="text-4xl lg:text-2xl">
-          <h2 className="my-20 text-4xl lg:mb-12 lg:text-3xl">Average Errors</h2>
-          {reportRanges.map((range, idx) => 
-            !!range?.avg && (
-              <section
-                className="mt-8 lg:mt-4 grid grid-cols-2 gap-12"
-                key={idx}
-              >
-                <label>{range?.label}:</label>
-                <span>{range?.avg}</span>
-              </section>
-            )
-          )}
+        <section className="mt-4 text-lg">
+          <h2 className="mt-8 text-xl lg:text-2xl">Average Errors</h2>
+          {reportRanges.map((range, idx) => !!range?.avg && (
+            <section
+              className="mt-4 grid grid-cols-2 gap-12"
+              key={idx}
+            >
+              <label>{range?.label}:</label>
+              <span>{Math.round(range?.avg * 1000) / 1000}</span>
+            </section>
+          ))}
         </section>
       </section>
     </>
