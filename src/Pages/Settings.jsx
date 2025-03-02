@@ -51,6 +51,11 @@ export function Settings({ db }) {
     return stateDoVoiceInput ? 'false' !== stateDoVoiceInput : true;
   });
 
+  const [doTrackProgress, setDoTrackProgress] = useState(() => {
+    const stateDoTrackProgress = localStorage.getItem('state-do-track-progress');
+    return stateDoTrackProgress ? 'false' !== stateDoTrackProgress : true;
+  });
+
   useEffect(() => {
     getUsers(db).then((users) => {
       setUsers(users);
@@ -115,6 +120,11 @@ export function Settings({ db }) {
   const persistDoVoiceInput = (doVoiceInput) => {
     setDoVoiceInput(doVoiceInput);
     localStorage.setItem('state-do-voice-input', doVoiceInput);
+  }
+
+  const persistDoTrackProgress = (doTrackProgress) => {
+    setDoTrackProgress(doTrackProgress);
+    localStorage.setItem('state-do-track-progress', doTrackProgress);
   }
 
   return (
@@ -247,6 +257,18 @@ export function Settings({ db }) {
               onChange={(e) => persistDoVoiceInput(e?.target?.checked)}
             />
             <label htmlFor="doVoiceInput"> Voice input</label>
+          </section>
+
+          <section className="mt-8 lg:mt-4">
+            <input
+              checked={doTrackProgress}
+              className="h-6 w-6"
+              id="doTrackProgress"
+              name="doTrackProgress"
+              type="checkbox"
+              onChange={(e) => persistDoTrackProgress(e?.target?.checked)}
+            />
+            <label htmlFor="doTrackProgress"> Track progress</label>
           </section>
         </section>
       </section>

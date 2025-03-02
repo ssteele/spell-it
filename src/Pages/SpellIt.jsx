@@ -32,6 +32,9 @@ const doVoiceWords = stateDoVoiceWords ? 'false' !== stateDoVoiceWords : true;
 const stateDoVoiceInput = localStorage.getItem('state-do-voice-input');
 const doVoiceInput = stateDoVoiceInput ? 'false' !== stateDoVoiceInput : true;
 
+const stateDoTrackProgress = localStorage.getItem('state-do-track-progress');
+const doTrackProgress = stateDoTrackProgress ? 'false' !== stateDoTrackProgress : true;
+
 const voiceSynth = window?.speechSynthesis;
 const utteranceRate = 0.75;
 
@@ -154,9 +157,7 @@ export function SpellIt({ db }) {
   };
 
   const updateUserProgress = (input) => {
-  // @todo: check if progress tracking is enabled
-
-    if (!targetWord?.value || !input) {
+    if (!doTrackProgress || !targetWord?.value || !input) {
       return;
     }
 
