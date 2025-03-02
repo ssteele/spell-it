@@ -16,9 +16,7 @@ export async function updateProgress(
   const index = store.index('userAndWordIndex');
   const request = index.getAll([userId, wordId]);
   request.onsuccess = () => {
-
     let progress = null;
-
     const filteredEntries = request.result.filter(entry => {
       const millisecondsElapsed = timestamp - entry?.timestamp;
       if (                                                          // only return entries that are:
@@ -29,7 +27,6 @@ export async function updateProgress(
         return entry;
       }
     });
-    console.log('SHS filteredEntries:', filteredEntries); // @debug
     if (filteredEntries.length) {
       progress = filteredEntries.at(-1);
     }
