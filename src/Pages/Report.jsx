@@ -92,10 +92,10 @@ export function Report({ db }) {
 
   return (
     <>
-      <section className="w-9/12 my-8 mx-auto text-lg lg:w-1/2 lg:text-2xl">
+      <section className="w-9/12 my-8 mx-auto text-lg lg:text-xl lg:w-1/2">
         <h1 className="mb-8 text-2xl lg:mb-12 lg:text-4xl">Report</h1>
 
-        <section className="mt-4 grid grid-cols-2 gap-12 text-lg">
+        <section className="mt-4 grid grid-cols-2 gap-12">
           <label htmlFor="selectUserId">User:</label>
           <select
             name="selectUserId"
@@ -116,8 +116,8 @@ export function Report({ db }) {
           </select>
         </section>
 
-        <section className="mt-4 text-lg">
-          <h2 className="mt-8 text-xl lg:text-2xl">Average Errors</h2>
+        <section className="mt-4">
+          <h2 className="mt-8 font-bold text-xl lg:text-2xl">Average Errors</h2>
           {reportRanges.map((range, idx) => !!range?.avg && (
             <section
               className="mt-4 grid grid-cols-2 gap-12"

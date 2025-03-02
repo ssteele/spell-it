@@ -129,10 +129,10 @@ export function Settings({ db }) {
 
   return (
     <>
-      <section className="w-9/12 my-8 mx-auto lg:w-1/2">
+      <section className="w-9/12 my-8 mx-auto text-lg lg:text-xl lg:w-1/2">
         <h1 className="mb-8 text-2xl lg:mb-12 lg:text-4xl">Settings</h1>
 
-        <section className="mt-4 grid grid-cols-2 gap-12 text-lg lg:text-xl">
+        <section className="mt-4 grid grid-cols-2 gap-12">
           <label htmlFor="selectUserId">User:</label>
           <select
             name="selectUserId"
@@ -153,7 +153,7 @@ export function Settings({ db }) {
           </select>
         </section>
 
-        <section className="mt-4 grid grid-cols-2 gap-12 text-lg lg:text-xl">
+        <section className="mt-4 grid grid-cols-2 gap-12">
           <label htmlFor="selectUserLevel">Level:</label>
           <select
             name="selectUserLevel"
@@ -170,7 +170,7 @@ export function Settings({ db }) {
           </select>
         </section>
 
-        <section className="mt-4 grid grid-cols-2 gap-12 text-lg lg:text-xl">
+        <section className="mt-4 grid grid-cols-2 gap-12">
           <label htmlFor="selectLanguageCode">Language:</label>
           <select
             name="selectLanguageCode"
@@ -187,7 +187,7 @@ export function Settings({ db }) {
           </select>
         </section>
 
-        <section className="mt-4 grid grid-cols-2 gap-12 text-lg lg:text-xl">
+        <section className="mt-4 grid grid-cols-2 gap-12">
           <label htmlFor="selectLanguageCode">Repeat threshold:</label>
           <input
             placeholder="10"
@@ -197,7 +197,7 @@ export function Settings({ db }) {
           />
         </section>
 
-        <section className="mt-4 px-4 py-6 grid grid-cols-1 gap-x-12 border-2 border-gray-300 rounded-lg text-lg lg:text-xl">
+        <section className="mt-4 px-4 py-6 grid grid-cols-1 gap-x-12 border-2 border-gray-300 rounded-lg">
           <section>
             <input
               checked={doShowHints}
@@ -234,7 +234,7 @@ export function Settings({ db }) {
           )}
         </section>
 
-        <section className="mt-4 text-lg lg:text-xl">
+        <section className="mt-4">
           <input
             checked={doVoiceWords}
             className="h-3 w-3 lg:h-5 lg:w-5"
@@ -246,7 +246,7 @@ export function Settings({ db }) {
           <label htmlFor="doVoiceWords"> Voice words</label>
         </section>
 
-        <section className="mt-4 text-lg lg:text-xl">
+        <section className="mt-4">
           <input
             checked={doVoiceInput}
             className="h-3 w-3 lg:h-5 lg:w-5"
@@ -258,7 +258,7 @@ export function Settings({ db }) {
           <label htmlFor="doVoiceInput"> Voice input</label>
         </section>
 
-        <section className="mt-4 text-lg lg:text-xl">
+        <section className="mt-4">
           <input
             checked={doTrackProgress}
             className="h-3 w-3 lg:h-5 lg:w-5"
