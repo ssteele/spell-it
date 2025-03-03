@@ -50,6 +50,8 @@ export function Report({ db }) {
     },
   ]);
 
+  const [frequentlyErroredWords, setFrequentlyErroredWords] = useState([]);
+
   useEffect(() => {
     getUsers(db).then((users) => {
       setUsers(users);
@@ -65,6 +67,11 @@ export function Report({ db }) {
         range.avg = calculateAverageErrorsForSpan(progressEntries, range?.ms, timestamp);
         return range;
       }));
+
+      setFrequentlyErroredWords(progressEntries
+        .filter((entry) => entry?.isComplete && entry?.errors > 0)
+        .sort((a, b) => b?.errors - a?.errors)
+      );
     }).catch((error) => {
       console.error('Error getting progress:', error);
     });
@@ -88,6 +95,15 @@ export function Report({ db }) {
     const totalErrors = entries.reduce((sum, entry) => sum + entry.errors, 0);
     const attempts = entries.length;
     return attempts ? totalErrors / attempts : null;
+  }
+
+  const renderFrequentlyErroredWords = () => {
+    const words = frequentlyErroredWords.map(({input, errors}) => `${input} (${errors})`);
+    return (
+      <span>
+        {words.join(', ')}
+      </span>
+    );
   }
 
   return (
@@ -127,6 +143,13 @@ export function Report({ db }) {
               <span>{Math.round(range?.avg * 1000) / 1000}</span>
             </section>
           ))}
+        </section>
+
+        <section className="mt-4">
+          <h2 className="mt-8 font-bold text-xl lg:text-2xl">Misspelled Words</h2>
+          <section className="mt-4">
+            {renderFrequentlyErroredWords()}
+          </section>
         </section>
       </section>
     </>
