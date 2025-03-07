@@ -18,6 +18,9 @@ export function SpellIt({ db }) {
   const stateSelectedUserId = localStorage.getItem('state-selected-user-id');
   const selectedUserId = stateSelectedUserId ? stateSelectedUserId : 0;
 
+  if (!selectedUserId) {
+    window.location.href = '?p=settings';
+  }
 
   const stateSelectedLanguageCode = localStorage.getItem('state-selected-language-code');
   const selectedLanguageCode = (stateSelectedLanguageCode && SUPPORTED_LANGUAGE_CODES.includes(stateSelectedLanguageCode))
