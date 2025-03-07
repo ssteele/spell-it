@@ -6,42 +6,6 @@ import { getUser } from '@/Repositories/User';
 import { updateProgress } from '@/Repositories/Progress';
 import { getWordsByLevelAndLanguage } from '@/Repositories/Word';
 
-const stateSelectedUserId = localStorage.getItem('state-selected-user-id');
-const selectedUserId = stateSelectedUserId ? stateSelectedUserId : 1;
-
-const stateSelectedLanguageCode = localStorage.getItem('state-selected-language-code');
-const selectedLanguageCode = (stateSelectedLanguageCode && SUPPORTED_LANGUAGE_CODES.includes(stateSelectedLanguageCode))
-  ? stateSelectedLanguageCode
-  : 'en';
-
-const stateRepeatThreshold = localStorage.getItem('state-repeat-threshold');
-const repeatThreshold = stateRepeatThreshold ? Number(stateRepeatThreshold) : 8;
-
-const stateDoShowHints = localStorage.getItem('state-do-show-hints');
-const doShowHints = stateDoShowHints ? 'false' !== stateDoShowHints : true;
-
-const stateDoHintsMatchMouth = localStorage.getItem('state-do-hints-match-mouth');
-const doHintsMatchMouth = stateDoHintsMatchMouth ? 'false' !== stateDoHintsMatchMouth : true;
-
-const stateHintCount = localStorage.getItem('state-hint-count');
-const hintCount = stateHintCount ? Number(stateHintCount) : 4;
-
-const stateDoVoiceWords = localStorage.getItem('state-do-voice-words');
-const doVoiceWords = stateDoVoiceWords ? 'false' !== stateDoVoiceWords : true;
-
-const stateDoVoiceInput = localStorage.getItem('state-do-voice-input');
-const doVoiceInput = stateDoVoiceInput ? 'false' !== stateDoVoiceInput : true;
-
-const stateDoTrackProgress = localStorage.getItem('state-do-track-progress');
-const doTrackProgress = stateDoTrackProgress ? 'false' !== stateDoTrackProgress : true;
-
-const voiceSynth = window?.speechSynthesis;
-const utteranceRate = 0.75;
-
-const alphabetLetters = LETTER_LIST[selectedLanguageCode];
-const vowels = alphabetLetters.filter((letter) => 'aeiou'.includes(letter));
-const consonants = alphabetLetters.filter((letter) => !'aeiou'.includes(letter));
-
 export function SpellIt({ db }) {
   const [user, setUser] = useState({});
   const [input, setInput] = useState('');
@@ -50,6 +14,43 @@ export function SpellIt({ db }) {
   const [previousWordsSet, setPreviousWordsSet] = useState(new Set());
   const [targetWord, setTargetWord] = useState('');
   const [targetLetters, setTargetLetters] = useState([]);
+
+  const stateSelectedUserId = localStorage.getItem('state-selected-user-id');
+  const selectedUserId = stateSelectedUserId ? stateSelectedUserId : 0;
+
+
+  const stateSelectedLanguageCode = localStorage.getItem('state-selected-language-code');
+  const selectedLanguageCode = (stateSelectedLanguageCode && SUPPORTED_LANGUAGE_CODES.includes(stateSelectedLanguageCode))
+    ? stateSelectedLanguageCode
+    : 'en';
+
+  const stateRepeatThreshold = localStorage.getItem('state-repeat-threshold');
+  const repeatThreshold = stateRepeatThreshold ? Number(stateRepeatThreshold) : 8;
+
+  const stateDoShowHints = localStorage.getItem('state-do-show-hints');
+  const doShowHints = stateDoShowHints ? 'false' !== stateDoShowHints : true;
+
+  const stateDoHintsMatchMouth = localStorage.getItem('state-do-hints-match-mouth');
+  const doHintsMatchMouth = stateDoHintsMatchMouth ? 'false' !== stateDoHintsMatchMouth : true;
+
+  const stateHintCount = localStorage.getItem('state-hint-count');
+  const hintCount = stateHintCount ? Number(stateHintCount) : 4;
+
+  const stateDoVoiceWords = localStorage.getItem('state-do-voice-words');
+  const doVoiceWords = stateDoVoiceWords ? 'false' !== stateDoVoiceWords : true;
+
+  const stateDoVoiceInput = localStorage.getItem('state-do-voice-input');
+  const doVoiceInput = stateDoVoiceInput ? 'false' !== stateDoVoiceInput : true;
+
+  const stateDoTrackProgress = localStorage.getItem('state-do-track-progress');
+  const doTrackProgress = stateDoTrackProgress ? 'false' !== stateDoTrackProgress : true;
+
+  const voiceSynth = window?.speechSynthesis;
+  const utteranceRate = 0.75;
+
+  const alphabetLetters = LETTER_LIST[selectedLanguageCode];
+  const vowels = alphabetLetters.filter((letter) => 'aeiou'.includes(letter));
+  const consonants = alphabetLetters.filter((letter) => !'aeiou'.includes(letter));
 
   useEffect(() => {
     focusInput();
