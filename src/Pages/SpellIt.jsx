@@ -20,7 +20,9 @@ export function SpellIt({ db }) {
   const selectedUserId = stateSelectedUserId ? stateSelectedUserId : 0;
 
   if (!selectedUserId) {
-    window.location.href = '?p=settings';
+    setTimeout(() => {
+      window.location.href = '?p=settings';
+    }, 2000);
   }
 
   const stateSelectedLevel = localStorage.getItem('state-selected-level');
