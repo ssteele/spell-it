@@ -109,7 +109,32 @@ export function Report({ db }) {
   return (
     <>
       <section className="w-9/12 my-8 mx-auto text-lg lg:text-xl lg:w-1/2">
-        <h1 className="mb-8 text-2xl lg:mb-12 lg:text-4xl">Report</h1>
+        <section className="mb-4 grid grid-cols-2">
+          <h1 className="mb-8 text-2xl lg:mb-12 lg:text-4xl">Report</h1>
+
+          <nav className="grid grid-cols-3 gap-3 justify-self-end">
+            <a href="/" >
+              <img
+                className="h-8 w-8 sm:h-8 sm:w-8"
+                src="img/play.svg"
+              />
+            </a>
+
+            <span className="opacity-25" href="/?p=report">
+              <img
+                className="h-8 w-8 sm:h-8 sm:w-8"
+                src="img/report.svg"
+              />
+            </span>
+
+            <a href="/?p=settings">
+              <img
+                className="h-8 w-8 sm:h-8 sm:w-8"
+                src="img/settings.svg"
+              />
+            </a>
+          </nav>
+        </section>
 
         <section className="mt-4 grid grid-cols-2 gap-12">
           <label htmlFor="selectUserId">User:</label>

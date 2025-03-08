@@ -21,9 +21,9 @@ export function Settings({ db }) {
     return (stateSelectedLanguageCode && SUPPORTED_LANGUAGE_CODES.includes(stateSelectedLanguageCode)) ? stateSelectedLanguageCode : 'en';
   });
 
-  const [repeatThreshold, setRepeatThreshold] = useState(() => {
-    const stateRepeatThreshold = localStorage.getItem('state-repeat-threshold');
-    return stateRepeatThreshold ? stateRepeatThreshold : 8;
+  const [repeatNext, setRepeatNext] = useState(() => {
+    const stateRepeatNext = localStorage.getItem('state-repeat-next');
+    return stateRepeatNext ? stateRepeatNext : 8;
   });
 
   const [doShowHints, setDoShowHints] = useState(() => {
@@ -92,9 +92,9 @@ export function Settings({ db }) {
     localStorage.setItem('state-selected-language-code', languageCode);
   }
 
-  const persistRepeatThreshold = (count) => {
-    setRepeatThreshold(count);
-    localStorage.setItem('state-repeat-threshold', count);
+  const persistRepeatNext = (count) => {
+    setRepeatNext(count);
+    localStorage.setItem('state-repeat-next', count);
   }
 
   const persistDoShowHints = (doShowHints) => {
@@ -130,7 +130,32 @@ export function Settings({ db }) {
   return (
     <>
       <section className="w-9/12 my-8 mx-auto text-lg lg:text-xl lg:w-1/2">
-        <h1 className="mb-8 text-2xl lg:mb-12 lg:text-4xl">Settings</h1>
+        <section className="mb-4 grid grid-cols-2">
+          <h1 className="mb-8 text-2xl lg:mb-12 lg:text-4xl">Settings</h1>
+
+          <nav className="grid grid-cols-3 gap-3 justify-self-end">
+            <a href="/" >
+              <img
+                className="h-8 w-8 sm:h-8 sm:w-8"
+                src="img/play.svg"
+              />
+            </a>
+
+            <a href="/?p=report">
+              <img
+                className="h-8 w-8 sm:h-8 sm:w-8"
+                src="img/report.svg"
+              />
+            </a>
+
+            <span className="opacity-25">
+              <img
+                className="h-8 w-8 sm:h-8 sm:w-8"
+                src="img/settings.svg"
+              />
+            </span>
+          </nav>
+        </section>
 
         <section className="mt-4 grid grid-cols-2 gap-12">
           <label htmlFor="selectUserId">User:</label>
@@ -188,12 +213,13 @@ export function Settings({ db }) {
         </section>
 
         <section className="mt-4 grid grid-cols-2 gap-12">
-          <label htmlFor="selectLanguageCode">Repeat threshold:</label>
+          <label htmlFor="repeatNext">Repeat next:</label>
           <input
+            id="repeatNext"
             placeholder="10"
             type="text"
-            value={repeatThreshold}
-            onChange={(e) => persistRepeatThreshold(e?.target?.value)}
+            value={repeatNext}
+            onChange={(e) => persistRepeatNext(e?.target?.value)}
           />
         </section>
 
