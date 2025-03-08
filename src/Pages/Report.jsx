@@ -7,8 +7,8 @@ export function Report({ db }) {
   const [users, setUsers] = useState([]);
 
   const [selectedUserId, setSelectedUserId] = useState(() => {
-    const stateSelectedUserId = localStorage.getItem('state-selected-report-user-id');
-    return stateSelectedUserId ? stateSelectedUserId : '';
+    const stateSelectedUserId = localStorage.getItem('state-selected-user-id');
+    return stateSelectedUserId ? stateSelectedUserId : 0;
   });
 
   const [reportRanges, setReportRanges] = useState([
@@ -79,7 +79,6 @@ export function Report({ db }) {
 
   const persistSelectedUserId = (userId) => {
     setSelectedUserId(userId);
-    localStorage.setItem('state-selected-report-user-id', userId);
   }
 
   const calculateAverageErrorsForSpan = (progressEntries, timespan, timestamp) => {
