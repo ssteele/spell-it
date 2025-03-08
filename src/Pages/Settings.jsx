@@ -13,10 +13,11 @@ export function Settings({ db }) {
   });
 
   const [selectedUserLevel, setSelectedUserLevel] = useState(() => {
-    return user ? user?.currentLevel : 0;
+    const stateSelectedLevel = localStorage.getItem('state-selected-level');
+    return stateSelectedLevel ? stateSelectedLevel : 0;
   });
 
-  const [selectedLanguageCode, setSelectedLanguageCode] = useState(() => {
+  const [selectedUserLanguage, setSelectedUserLanguage] = useState(() => {
     const stateSelectedLanguageCode = localStorage.getItem('state-selected-language-code');
     return (stateSelectedLanguageCode && SUPPORTED_LANGUAGE_CODES.includes(stateSelectedLanguageCode)) ? stateSelectedLanguageCode : 'en';
   });
@@ -75,6 +76,10 @@ export function Settings({ db }) {
       getUser(db, userId).then((user) => {
         setUser(user);
         setSelectedUserLevel(user?.currentLevel);
+        localStorage.setItem('state-selected-level', user?.currentLevel);
+
+        setSelectedUserLanguage(user?.currentLanguage);
+        localStorage.setItem('state-selected-language-code', user?.currentLanguage);
       }).catch((error) => {
         console.error('Error getting user:', error);
       });
@@ -89,17 +94,14 @@ export function Settings({ db }) {
   const persistSelectedUserLevel = (level) => {
     const numberLevel = Number(level);
     setSelectedUserLevel(numberLevel);
+    localStorage.setItem('state-selected-level', level);
     updateUser(db, { ...user, currentLevel: numberLevel });
   }
 
-  const persistSelectedLanguageCode = (languageCode) => {
-    setSelectedLanguageCode(languageCode);
+  const persistSelectedUserLanguage = (languageCode) => {
+    setSelectedUserLanguage(languageCode);
     localStorage.setItem('state-selected-language-code', languageCode);
-  }
-
-  const persistRepeatNext = (count) => {
-    setRepeatNext(count);
-    localStorage.setItem('state-repeat-next', count);
+    updateUser(db, { ...user, currentLanguage: languageCode });
   }
 
   const persistDoShowHints = (doShowHints) => {
@@ -115,6 +117,11 @@ export function Settings({ db }) {
   const persistHintCount = (count) => {
     setHintCount(count);
     localStorage.setItem('state-hint-count', count);
+  }
+
+  const persistRepeatNext = (count) => {
+    setRepeatNext(count);
+    localStorage.setItem('state-repeat-next', count);
   }
 
   const persistDoFocusInput = (doFocusInput) => {
@@ -206,12 +213,12 @@ export function Settings({ db }) {
         </section>
 
         <section className="mt-4 grid grid-cols-2 gap-12">
-          <label htmlFor="selectLanguageCode">Language:</label>
+          <label htmlFor="selectUserLanguage">Language:</label>
           <select
-            name="selectLanguageCode"
-            id="selectLanguageCode"
-            value={selectedLanguageCode}
-            onChange={(e) => persistSelectedLanguageCode(e?.target?.value)}
+            name="selectUserLanguage"
+            id="selectUserLanguage"
+            value={selectedUserLanguage}
+            onChange={(e) => persistSelectedUserLanguage(e?.target?.value)}
           >
             { SUPPORTED_LANGUAGE_META.map((language, idx) => (
               <option
@@ -220,17 +227,6 @@ export function Settings({ db }) {
               >{language?.name}</option>
             ))}
           </select>
-        </section>
-
-        <section className="mt-4 grid grid-cols-2 gap-12">
-          <label htmlFor="repeatNext">Repeat next:</label>
-          <input
-            id="repeatNext"
-            placeholder="10"
-            type="text"
-            value={repeatNext}
-            onChange={(e) => persistRepeatNext(e?.target?.value)}
-          />
         </section>
 
         <section className="mt-4 px-4 py-6 grid grid-cols-1 gap-x-12 border-2 border-gray-300 rounded-lg">
@@ -268,6 +264,17 @@ export function Settings({ db }) {
               />
             </section>
           )}
+        </section>
+
+        <section className="mt-4 grid grid-cols-2 gap-12">
+          <label htmlFor="repeatNext">Repeat next:</label>
+          <input
+            id="repeatNext"
+            placeholder="10"
+            type="text"
+            value={repeatNext}
+            onChange={(e) => persistRepeatNext(e?.target?.value)}
+          />
         </section>
 
         <section className="mt-4">

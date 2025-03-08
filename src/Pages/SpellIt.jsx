@@ -22,6 +22,9 @@ export function SpellIt({ db }) {
     window.location.href = '?p=settings';
   }
 
+  const stateSelectedLevel = localStorage.getItem('state-selected-level');
+  const selectedLevel = stateSelectedLevel ? Number(stateSelectedLevel) : 0;
+
   const stateSelectedLanguageCode = localStorage.getItem('state-selected-language-code');
   const selectedLanguageCode = (stateSelectedLanguageCode && SUPPORTED_LANGUAGE_CODES.includes(stateSelectedLanguageCode))
     ? stateSelectedLanguageCode
@@ -71,8 +74,7 @@ export function SpellIt({ db }) {
 
   useEffect(() => {
     if (!!user?.id) {
-      const currentLevel = Number(user?.currentLevel) || 0;
-      getWordsByLevelAndLanguage(db, currentLevel, selectedLanguageCode).then((words) => {
+      getWordsByLevelAndLanguage(db, selectedLevel, selectedLanguageCode).then((words) => {
         setWords(words);
         renderTargetWord(words);
       }).catch((error) => {
