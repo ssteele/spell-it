@@ -58,9 +58,6 @@ export function SpellIt({ db }) {
   const vowels = alphabetLetters.filter((letter) => 'aeiou'.includes(letter));
   const consonants = alphabetLetters.filter((letter) => !'aeiou'.includes(letter));
 
-  // useEffect(() => {
-  //   focusInput();
-  // }, []);
 
   useEffect(() => {
     if (selectedUserId) {
