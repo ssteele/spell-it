@@ -101,18 +101,21 @@ export function migration1(db) {
       dob: getDateOffset(new Date('2020-06-08')),
       currentLevel: 0,
       currentLanguage: 'es',
+      currentHintCount: 3,
     },
     {
       name: 'Harvi',
       dob: getDateOffset(new Date('2016-11-16')),
       currentLevel: 2,
       currentLanguage: 'en',
+      currentHintCount: 4,
     },
     {
       name: 'Test',
       dob: getDateOffset(new Date('2001-01-01')),
       currentLevel: 5,
       currentLanguage: 'en',
+      currentHintCount: 4,
     },
   ];
   users.map(u => createUser(db, u));

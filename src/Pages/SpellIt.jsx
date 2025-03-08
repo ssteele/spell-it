@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { LETTER_LIST } from '@/Constants/Letters';
+import { DEFAULT_SETTING } from '@/Constants/Settings';
 import { SUPPORTED_LANGUAGE_CODES, SUPPORTED_LANGUAGE_META } from '@/Constants/Words';
 import { getUser } from '@/Repositories/User';
 import { updateProgress } from '@/Repositories/Progress';
@@ -23,36 +24,36 @@ export function SpellIt({ db }) {
   }
 
   const stateSelectedLevel = localStorage.getItem('state-selected-level');
-  const selectedLevel = stateSelectedLevel ? Number(stateSelectedLevel) : 0;
+  const selectedLevel = stateSelectedLevel ? Number(stateSelectedLevel) : DEFAULT_SETTING.selectedUserLevel;
 
   const stateSelectedLanguageCode = localStorage.getItem('state-selected-language-code');
   const selectedLanguageCode = (stateSelectedLanguageCode && SUPPORTED_LANGUAGE_CODES.includes(stateSelectedLanguageCode))
     ? stateSelectedLanguageCode
-    : 'en';
+    : DEFAULT_SETTING.selectedUserLanguage;
 
   const stateRepeatThreshold = localStorage.getItem('state-repeat-threshold');
-  const repeatThreshold = stateRepeatThreshold ? Number(stateRepeatThreshold) : 8;
+  const repeatThreshold = stateRepeatThreshold ? Number(stateRepeatThreshold) : DEFAULT_SETTING.repeatNext;
 
   const stateDoShowHints = localStorage.getItem('state-do-show-hints');
-  const doShowHints = stateDoShowHints ? 'false' !== stateDoShowHints : true;
+  const doShowHints = stateDoShowHints ? 'false' !== stateDoShowHints : DEFAULT_SETTING.doShowHints;
 
   const stateDoHintsMatchMouth = localStorage.getItem('state-do-hints-match-mouth');
-  const doHintsMatchMouth = stateDoHintsMatchMouth ? 'false' !== stateDoHintsMatchMouth : true;
+  const doHintsMatchMouth = stateDoHintsMatchMouth ? 'false' !== stateDoHintsMatchMouth : DEFAULT_SETTING.doHintsMatchMouth;
 
   const stateHintCount = localStorage.getItem('state-hint-count');
-  const hintCount = stateHintCount ? Number(stateHintCount) : 4;
+  const hintCount = stateHintCount ? Number(stateHintCount) : DEFAULT_SETTING.hintCount;
 
   const stateDoFocusInput = localStorage.getItem('state-do-focus-input');
-  const doFocusInput = stateDoFocusInput ? 'false' !== stateDoFocusInput : false;
+  const doFocusInput = stateDoFocusInput ? 'false' !== stateDoFocusInput : DEFAULT_SETTING.doFocusInput;
 
   const stateDoVoiceWords = localStorage.getItem('state-do-voice-words');
-  const doVoiceWords = stateDoVoiceWords ? 'false' !== stateDoVoiceWords : true;
+  const doVoiceWords = stateDoVoiceWords ? 'false' !== stateDoVoiceWords : DEFAULT_SETTING.doVoiceWords;
 
   const stateDoVoiceInput = localStorage.getItem('state-do-voice-input');
-  const doVoiceInput = stateDoVoiceInput ? 'false' !== stateDoVoiceInput : true;
+  const doVoiceInput = stateDoVoiceInput ? 'false' !== stateDoVoiceInput : DEFAULT_SETTING.doVoiceInput;
 
   const stateDoTrackProgress = localStorage.getItem('state-do-track-progress');
-  const doTrackProgress = stateDoTrackProgress ? 'false' !== stateDoTrackProgress : true;
+  const doTrackProgress = stateDoTrackProgress ? 'false' !== stateDoTrackProgress : DEFAULT_SETTING.doTrackProgress;
 
   const voiceSynth = window?.speechSynthesis;
   const utteranceRate = 0.75;

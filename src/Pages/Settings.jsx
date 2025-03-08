@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { DEFAULT_SETTING } from '@/Constants/Settings';
 import { SUPPORTED_LANGUAGE_CODES, SUPPORTED_LANGUAGE_LEVELS, SUPPORTED_LANGUAGE_META } from '@/Constants/Words';
 import { getUser, getUsers, updateUser } from '@/Repositories/User';
 
@@ -14,52 +15,53 @@ export function Settings({ db }) {
 
   const [selectedUserLevel, setSelectedUserLevel] = useState(() => {
     const stateSelectedLevel = localStorage.getItem('state-selected-level');
-    return stateSelectedLevel ? stateSelectedLevel : 0;
+    return stateSelectedLevel ? stateSelectedLevel : DEFAULT_SETTING?.selectedUserLevel;
   });
 
   const [selectedUserLanguage, setSelectedUserLanguage] = useState(() => {
     const stateSelectedLanguageCode = localStorage.getItem('state-selected-language-code');
-    return (stateSelectedLanguageCode && SUPPORTED_LANGUAGE_CODES.includes(stateSelectedLanguageCode)) ? stateSelectedLanguageCode : 'en';
+    return (stateSelectedLanguageCode && SUPPORTED_LANGUAGE_CODES.includes(stateSelectedLanguageCode))
+      ? stateSelectedLanguageCode : DEFAULT_SETTING?.selectedUserLanguage;
   });
 
   const [repeatNext, setRepeatNext] = useState(() => {
     const stateRepeatNext = localStorage.getItem('state-repeat-next');
-    return stateRepeatNext ? stateRepeatNext : 8;
+    return stateRepeatNext ? stateRepeatNext : DEFAULT_SETTING?.repeatNext;
   });
 
   const [doShowHints, setDoShowHints] = useState(() => {
     const stateDoShowHints = localStorage.getItem('state-do-show-hints');
-    return stateDoShowHints ? 'false' !== stateDoShowHints : true;
+    return stateDoShowHints ? 'false' !== stateDoShowHints : DEFAULT_SETTING?.doShowHints;
   });
 
   const [doHintsMatchMouth, setDoHintsMatchMouth] = useState(() => {
     const stateDoHintsMatchMouth = localStorage.getItem('state-do-hints-match-mouth');
-    return stateDoHintsMatchMouth ? 'false' !== stateDoHintsMatchMouth : true;
+    return stateDoHintsMatchMouth ? 'false' !== stateDoHintsMatchMouth : DEFAULT_SETTING?.doHintsMatchMouth;
   });
 
   const [hintCount, setHintCount] = useState(() => {
     const stateHintCount = localStorage.getItem('state-hint-count');
-    return stateHintCount ? stateHintCount : 4;
+    return stateHintCount ? stateHintCount : DEFAULT_SETTING?.hintCount;
   });
 
   const [doFocusInput, setDoFocusInput] = useState(() => {
     const stateDoFocusInput = localStorage.getItem('state-do-focus-input');
-    return stateDoFocusInput ? 'false' !== stateDoFocusInput : false;
+    return stateDoFocusInput ? 'false' !== stateDoFocusInput : DEFAULT_SETTING?.doFocusInput;
   });
 
   const [doVoiceWords, setDoVoiceWords] = useState(() => {
     const stateDoVoiceWords = localStorage.getItem('state-do-voice-words');
-    return stateDoVoiceWords ? 'false' !== stateDoVoiceWords : true;
+    return stateDoVoiceWords ? 'false' !== stateDoVoiceWords : DEFAULT_SETTING?.doVoiceWords;
   });
 
   const [doVoiceInput, setDoVoiceInput] = useState(() => {
     const stateDoVoiceInput = localStorage.getItem('state-do-voice-input');
-    return stateDoVoiceInput ? 'false' !== stateDoVoiceInput : true;
+    return stateDoVoiceInput ? 'false' !== stateDoVoiceInput : DEFAULT_SETTING?.doVoiceInput;
   });
 
   const [doTrackProgress, setDoTrackProgress] = useState(() => {
     const stateDoTrackProgress = localStorage.getItem('state-do-track-progress');
-    return stateDoTrackProgress ? 'false' !== stateDoTrackProgress : true;
+    return stateDoTrackProgress ? 'false' !== stateDoTrackProgress : DEFAULT_SETTING?.doTrackProgress;
   });
 
   useEffect(() => {
@@ -75,11 +77,18 @@ export function Settings({ db }) {
     if (userId) {
       getUser(db, userId).then((user) => {
         setUser(user);
-        setSelectedUserLevel(user?.currentLevel);
-        localStorage.setItem('state-selected-level', user?.currentLevel);
 
-        setSelectedUserLanguage(user?.currentLanguage);
-        localStorage.setItem('state-selected-language-code', user?.currentLanguage);
+        const userLevel = user?.currentLevel || DEFAULT_SETTING?.selectedUserLevel;
+        setSelectedUserLevel(userLevel);
+        localStorage.setItem('state-selected-level', userLevel);
+
+        const userLanguage = user?.currentLanguage || DEFAULT_SETTING?.selectedUserLanguage;
+        setSelectedUserLanguage(userLanguage);
+        localStorage.setItem('state-selected-language-code', userLanguage);
+
+        const userHintCount = user?.currentHintCount || DEFAULT_SETTING?.hintCount;
+        setHintCount(userHintCount);
+        localStorage.setItem('state-hint-count', userHintCount);
       }).catch((error) => {
         console.error('Error getting user:', error);
       });
@@ -114,9 +123,10 @@ export function Settings({ db }) {
     localStorage.setItem('state-do-hints-match-mouth', doHintsMatchMouth);
   }
 
-  const persistHintCount = (count) => {
+  const persistUserHintCount = (count) => {
     setHintCount(count);
     localStorage.setItem('state-hint-count', count);
+    updateUser(db, { ...user, currentHintCount: count });
   }
 
   const persistRepeatNext = (count) => {
@@ -260,7 +270,7 @@ export function Settings({ db }) {
                 placeholder="Hint count"
                 type="text"
                 value={hintCount}
-                onChange={(e) => persistHintCount(e?.target?.value)}
+                onChange={(e) => persistUserHintCount(e?.target?.value)}
               />
             </section>
           )}
