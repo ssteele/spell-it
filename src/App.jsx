@@ -10,6 +10,14 @@ const urlParams = new URLSearchParams(window.location.search);
 const page = urlParams.get('p');
 
 function App() {
+  if (!db) {
+    return (
+      <div className="App">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+  
   switch (page) {
     case 'settings':
       return (

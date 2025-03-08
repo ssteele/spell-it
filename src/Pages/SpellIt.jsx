@@ -61,7 +61,6 @@ export function SpellIt({ db }) {
   const vowels = alphabetLetters.filter((letter) => 'aeiou'.includes(letter));
   const consonants = alphabetLetters.filter((letter) => !'aeiou'.includes(letter));
 
-
   useEffect(() => {
     if (selectedUserId) {
       getUser(db, Number(selectedUserId)).then((u) => {
@@ -74,9 +73,8 @@ export function SpellIt({ db }) {
 
   useEffect(() => {
     if (!!user?.id) {
-      getWordsByLevelAndLanguage(db, selectedLevel, selectedLanguageCode).then((words) => {
-        setWords(words);
-        renderTargetWord(words);
+      getWordsByLevelAndLanguage(db, selectedLevel, selectedLanguageCode).then((fetchedWords) => {
+        setWords(fetchedWords);
       }).catch((error) => {
         console.error('Error getting words:', error);
       });
@@ -84,6 +82,15 @@ export function SpellIt({ db }) {
   }, [user]);
 
   useEffect(() => {
+    if (words?.length) {
+      renderTargetWord(words);
+    }
+  }, [words]);
+
+  useEffect(() => {
+    if (!targetWord?.value) {
+      return;
+    }
     updateHintLetters('');
   }, [targetWord]);
 
