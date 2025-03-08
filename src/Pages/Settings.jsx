@@ -41,6 +41,11 @@ export function Settings({ db }) {
     return stateHintCount ? stateHintCount : 4;
   });
 
+  const [doFocusInput, setDoFocusInput] = useState(() => {
+    const stateDoFocusInput = localStorage.getItem('state-do-focus-input');
+    return stateDoFocusInput ? 'false' !== stateDoFocusInput : false;
+  });
+
   const [doVoiceWords, setDoVoiceWords] = useState(() => {
     const stateDoVoiceWords = localStorage.getItem('state-do-voice-words');
     return stateDoVoiceWords ? 'false' !== stateDoVoiceWords : true;
@@ -110,6 +115,11 @@ export function Settings({ db }) {
   const persistHintCount = (count) => {
     setHintCount(count);
     localStorage.setItem('state-hint-count', count);
+  }
+
+  const persistDoFocusInput = (doFocusInput) => {
+    setDoFocusInput(doFocusInput);
+    localStorage.setItem('state-do-focus-input', doFocusInput);
   }
 
   const persistDoVoiceWords = (doVoiceWords) => {
@@ -258,6 +268,18 @@ export function Settings({ db }) {
               />
             </section>
           )}
+        </section>
+
+        <section className="mt-4">
+          <input
+            checked={doFocusInput}
+            className="h-3 w-3 lg:h-5 lg:w-5"
+            id="doFocusInput"
+            name="doFocusInput"
+            type="checkbox"
+            onChange={(e) => persistDoFocusInput(e?.target?.checked)}
+          />
+          <label htmlFor="doFocusInput"> Focus input</label>
         </section>
 
         <section className="mt-4">

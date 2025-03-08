@@ -39,6 +39,9 @@ export function SpellIt({ db }) {
   const stateHintCount = localStorage.getItem('state-hint-count');
   const hintCount = stateHintCount ? Number(stateHintCount) : 4;
 
+  const stateDoFocusInput = localStorage.getItem('state-do-focus-input');
+  const doFocusInput = stateDoFocusInput ? 'false' !== stateDoFocusInput : false;
+
   const stateDoVoiceWords = localStorage.getItem('state-do-voice-words');
   const doVoiceWords = stateDoVoiceWords ? 'false' !== stateDoVoiceWords : true;
 
@@ -55,9 +58,9 @@ export function SpellIt({ db }) {
   const vowels = alphabetLetters.filter((letter) => 'aeiou'.includes(letter));
   const consonants = alphabetLetters.filter((letter) => !'aeiou'.includes(letter));
 
-  useEffect(() => {
-    focusInput();
-  }, []);
+  // useEffect(() => {
+  //   focusInput();
+  // }, []);
 
   useEffect(() => {
     if (selectedUserId) {
@@ -92,7 +95,7 @@ export function SpellIt({ db }) {
   }, [input]);
 
   const focusInput = () => {
-    if (!doShowHints) {
+    if (doFocusInput) {
       const inputEl = document.getElementById('input'); 
       inputEl.focus();
     }
@@ -150,8 +153,8 @@ export function SpellIt({ db }) {
       setTargetWord(targetWord);
       setTargetLetters([...targetWord?.value]);
       updateInput('');
-      focusInput();
       speakTargetWord(targetWord?.value);
+      focusInput();
     }
   };
 
