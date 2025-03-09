@@ -288,7 +288,7 @@ export function SpellIt({ db }) {
           {!!targetWord?.value && (input.length <= targetWord?.value?.length) && (
             <section>
               <img
-                className="h-36 w-36 sm:h-72 sm:w-72"
+                className="cursor-pointer h-36 w-36 sm:h-72 sm:w-72"
                 src={`img/${selectedLanguageCode}/targets/${targetWord?.value}.svg`}
                 onError={({ currentTarget }) => {
                   currentTarget.onerror = null;
@@ -299,7 +299,10 @@ export function SpellIt({ db }) {
             </section>
           )}
 
-          <section className="h-32 min-w-32 text-6xl sm:text-9xl">{input}</section>
+          <section
+            className="cursor-pointer h-32 min-w-32 text-6xl sm:text-9xl"
+            onClick={() => speakInput(input)}
+          >{input}</section>
         </section>
       </section>
 
