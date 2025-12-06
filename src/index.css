@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 body {
-  font-family: "ABeeZee", serif;
+  font-family: "ABeeZee", "Arial", sans-serif;
 }
